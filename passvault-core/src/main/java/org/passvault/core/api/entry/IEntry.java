@@ -1,11 +1,12 @@
-package org.passvault.core.entry;
+package org.passvault.core.api.entry;
 
-import org.passvault.core.entry.item.IEntryItem;
+import org.passvault.core.api.entry.item.IEntryItem;
+import org.passvault.core.api.vault.IVault;
 
 /**
  * An entry is a collection of items that are stored together.
  * <p>
- * Entries can be stored in a {@link org.passvault.core.vault.IVault}
+ * Entries can be stored in a {@link IVault}
  *
  * @author john@chav.is 9/18/2024
  */

@@ -1,6 +1,8 @@
-package org.passvault.core.vault;
+package org.passvault.core.api.vault;
 
-import org.passvault.core.entry.IEntry;
+import org.passvault.core.api.entry.IEntry;
+
+import java.util.Collection;
 
 /**
  * A vault will securely store PassVault entries. It can be a file, a database, or any other storage mechanism.
@@ -25,6 +27,14 @@ public interface IVault {
 	 * @return true if the entry was stored successfully, false otherwise
 	 */
 	boolean storeEntry(IEntry entry) throws Throwable;
+	
+	/**
+	 * Retrieves all entries from the vault.
+	 *
+	 * @return a collection of entries
+	 * @throws Throwable
+	 */
+	Collection<IEntry> getEntries() throws Throwable
 	
 	/**
 	 * @return true if the vault is locked, false otherwise

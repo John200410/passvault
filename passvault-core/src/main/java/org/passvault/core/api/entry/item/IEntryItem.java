@@ -1,7 +1,9 @@
-package org.passvault.core.entry.item;
+package org.passvault.core.api.entry.item;
+
+import org.passvault.core.api.entry.IEntry;
 
 /**
- * An item that is to be contained within an {@link org.passvault.core.entry.IEntry}.
+ * An item that is to be contained within an {@link IEntry}.
  * <p>
  * This can be a text item, hidden text item, TOTP item, etc.
  *

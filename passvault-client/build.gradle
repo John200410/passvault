@@ -1,0 +1,23 @@
+
+
+dependencies {
+	implementation(project(':passvault-core'))
+	
+	//flatlaf look and feel
+	implementation 'com.formdev:flatlaf:3.5.1'
+	implementation 'com.formdev:flatlaf-intellij-themes:3.5.1'
+	
+}
+
+
+// build fat jar with all dependencies
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'org.passvault.client.Main'
+		)
+	}
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
