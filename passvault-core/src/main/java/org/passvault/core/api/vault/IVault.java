@@ -1,6 +1,7 @@
 package org.passvault.core.api.vault;
 
 import org.passvault.core.api.entry.IEntry;
+import org.passvault.core.api.exception.VaultException;
 
 import java.util.Collection;
 
@@ -16,9 +17,9 @@ public interface IVault {
 	 *
 	 * @param password
 	 * @return
-	 * @throws Throwable
+	 * @throws VaultException
 	 */
-	boolean unlock(char[] password) throws Throwable;
+	boolean unlock(char[] password) throws VaultException;
 	
 	/**
 	 * Stores an entry into the vault.
@@ -26,7 +27,7 @@ public interface IVault {
 	 * @param entry the entry to store
 	 * @return true if the entry was stored successfully, false otherwise
 	 */
-	boolean storeEntry(IEntry entry) throws Throwable;
+	boolean storeEntry(IEntry entry) throws VaultException;
 	
 	/**
 	 * Retrieves all entries from the vault.
@@ -34,7 +35,7 @@ public interface IVault {
 	 * @return a collection of entries
 	 * @throws Throwable
 	 */
-	Collection<IEntry> getEntries() throws Throwable
+	Collection<IEntry> getEntries() throws VaultException;
 	
 	/**
 	 * @return true if the vault is locked, false otherwise

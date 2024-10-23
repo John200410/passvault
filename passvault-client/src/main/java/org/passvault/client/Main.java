@@ -1,6 +1,9 @@
 package org.passvault.client;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkIJTheme;
+import org.passvault.client.generator.GeneratorParameters;
+import org.passvault.client.generator.PasswordGenerator;
+import org.passvault.client.generator.PasswordGeneratorForm;
 
 import java.util.logging.Logger;
 
@@ -13,5 +16,18 @@ public class Main {
 		
 		//setup flatlaf theme
 		FlatAtomOneDarkIJTheme.setup();
+		
+		final GeneratorParameters params = new GeneratorParameters.Builder()
+				.build();
+		
+		try {
+			final String pass = PasswordGenerator.generatePassword(params);
+			LOGGER.info("Generated password: " + pass);
+		} catch (Exception e) {
+			LOGGER.severe("Error generating password: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		PasswordGeneratorForm.open(new GeneratorParameters.Builder());
 	}
 }

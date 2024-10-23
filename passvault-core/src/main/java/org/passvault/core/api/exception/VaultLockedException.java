@@ -5,4 +5,10 @@ package org.passvault.core.api.exception;
  *
  * @author john@chav.is 10/2/2024
  */
-public class VaultLockedException extends Exception {}
+public class VaultLockedException extends VaultException {
+	
+	public VaultLockedException() {
+		super("Vault is locked");
+	}
+	
+}
