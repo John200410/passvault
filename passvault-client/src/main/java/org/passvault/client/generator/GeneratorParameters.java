@@ -12,9 +12,11 @@ public record GeneratorParameters(char[] characters, char[] specialChars, int pa
 	/**
 	 * Constants
 	 */
-	public static final int MAX_PASSWORD_LENGTH = 256;
+	public static final int MAX_PASSWORD_LENGTH = 128;
 	
-	public static final char[] DEFAULT_CHARACTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	public static final char[] LOWERCASE_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+	public static final char[] UPPERCASE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	public static final char[] NUMBERS = "012345678".toCharArray();
 	public static final char[] DEFAULT_SPECIAL_CHARS = "!@#$%^&*?".toCharArray();
 	
 	/**
@@ -44,7 +46,9 @@ public record GeneratorParameters(char[] characters, char[] specialChars, int pa
 	 */
 	public static class Builder {
 		
-		char[] chars = DEFAULT_CHARACTERS.clone();
+		boolean lowercaseAlphabet = true;
+		boolean uppercaseAlphabet = true;
+		boolean numbers = true;
 		char[] specialChars = DEFAULT_SPECIAL_CHARS.clone();
 		int passwordLength = 16;
 		int specialCharCount = 1;
@@ -55,9 +59,31 @@ public record GeneratorParameters(char[] characters, char[] specialChars, int pa
 			this.passwordLength = MathUtils.clamp(passwordLength, 1, MAX_PASSWORD_LENGTH);
 			this.specialCharCount = MathUtils.clamp(specialCharCount, 0, this.getMaxSpecialChars());
 			
+			//add alphanumberic characters to one char array
+			final char[] alphaNumericChars = new char[
+					(lowercaseAlphabet ? LOWERCASE_ALPHABET.length : 0) +
+					(uppercaseAlphabet ? UPPERCASE_ALPHABET.length : 0) +
+					(numbers ? NUMBERS.length : 0)
+			];
+			
+			int index = 0;
+			if(lowercaseAlphabet) {
+				System.arraycopy(LOWERCASE_ALPHABET, 0, alphaNumericChars, index, LOWERCASE_ALPHABET.length);
+				index += LOWERCASE_ALPHABET.length;
+			}
+			
+			if(uppercaseAlphabet) {
+				System.arraycopy(UPPERCASE_ALPHABET, 0, alphaNumericChars, index, UPPERCASE_ALPHABET.length);
+				index += UPPERCASE_ALPHABET.length;
+			}
+			
+			if(numbers) {
+				System.arraycopy(NUMBERS, 0, alphaNumericChars, index, NUMBERS.length);
+			}
+			
 			//clean char arrays
 			final boolean stripAmbiguous = this.avoidAmbiguousChars;
-			final char[] chars = cleanChars(this.chars, stripAmbiguous);
+			final char[] chars = cleanChars(alphaNumericChars, stripAmbiguous);
 			final char[] specialChars = cleanChars(this.specialChars, stripAmbiguous);
 			
 			return new GeneratorParameters(chars, specialChars, passwordLength, specialCharCount, avoidAmbiguousChars);
@@ -67,8 +93,18 @@ public record GeneratorParameters(char[] characters, char[] specialChars, int pa
 			return this.passwordLength / 3;
 		}
 		
-		public Builder alphabet(char... alphabet) {
-			this.chars = alphabet;
+		public Builder lowercaseChars(boolean lowercase) {
+			this.lowercaseAlphabet = lowercase;
+			return this;
+		}
+		
+		public Builder uppercaseChars(boolean uppercase) {
+			this.uppercaseAlphabet = uppercase;
+			return this;
+		}
+		
+		public Builder numbers(boolean numbers) {
+			this.numbers = numbers;
 			return this;
 		}
 		
@@ -90,6 +126,10 @@ public record GeneratorParameters(char[] characters, char[] specialChars, int pa
 		public Builder avoidAmbiguousChars(boolean avoidAmbiguousChars) {
 			this.avoidAmbiguousChars = avoidAmbiguousChars;
 			return this;
+		}
+		
+		public int getPasswordLength() {
+			return this.passwordLength = MathUtils.clamp(this.passwordLength, 1, MAX_PASSWORD_LENGTH);
 		}
 		
 		/**
