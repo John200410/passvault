@@ -13,14 +13,19 @@ import java.util.Collection;
  */
 public class FileVault implements IVault {
 	
+	/**
+	 * The file location of the vault.
+	 */
+	private final File file;
 	
 	/**
 	 * A list containing entries of this vault.
 	 */
 	private final ArrayList<IEntry> entries = new ArrayList<>();
+
 	
 	public FileVault(File file) {
-	
+		this.file = file;
 	}
 	
 	@Override

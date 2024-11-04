@@ -4,6 +4,7 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkIJT
 import org.passvault.client.generator.GeneratorParameters;
 import org.passvault.client.generator.PasswordGenerator;
 import org.passvault.client.generator.PasswordGeneratorForm;
+import org.passvault.client.vault.VaultForm;
 
 import java.util.logging.Logger;
 
@@ -29,5 +30,6 @@ public class Main {
 		}
 		
 		PasswordGeneratorForm.open(new GeneratorParameters.Builder());
+		VaultForm.open(null);
 	}
 }
