@@ -31,5 +31,6 @@ public class Main {
 		
 		PasswordGeneratorForm.open(new GeneratorParameters.Builder());
 		VaultForm.open(null);
+		LoginForm.open();
 	}
 }
