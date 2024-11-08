@@ -10,11 +10,10 @@ import java.awt.*;
 public class LoginForm extends JFrame {
     private JPasswordField passwordField1;
     private JTextField textField1;
-    private JCheckBox serverSyncCheckBox;
-    private JTextField textField2;
     private JButton loginButton;
     private JButton newVaultButton;
     private JPanel rootPanel;
+    private JButton openButton;
 
     private LoginForm() {
         super("PassVault - Login");
@@ -22,6 +21,8 @@ public class LoginForm extends JFrame {
         this.setContentPane(this.rootPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
+
+
     }
 
     public static LoginForm open() {
@@ -57,16 +58,11 @@ public class LoginForm extends JFrame {
         passwordField1 = new JPasswordField();
         panel1.add(passwordField1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(panel2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel2.setBorder(BorderFactory.createTitledBorder(null, "Vault Location", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         textField1 = new JTextField();
         panel2.add(textField1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        serverSyncCheckBox = new JCheckBox();
-        serverSyncCheckBox.setText("Server Sync");
-        panel2.add(serverSyncCheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        textField2 = new JTextField();
-        panel2.add(textField2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator1 = new JSeparator();
         rootPanel.add(separator1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
@@ -85,5 +81,18 @@ public class LoginForm extends JFrame {
      */
     public JComponent $$$getRootComponent$$$() {
         return rootPanel;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+
+        //Creating IconImages
+        ImageIcon imageOpen = new ImageIcon();
+
+        //Creating the buttons
+        this.openButton = new JButton(imageOpen);
+
+
+
     }
 }
