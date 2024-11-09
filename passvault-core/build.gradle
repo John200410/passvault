@@ -1,4 +1,7 @@
 
 dependencies {
-
+	
+	//json for entry serialization
+	implementation 'com.google.code.gson:gson:2.11.0'
+	
 }

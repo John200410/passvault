@@ -1,7 +1,7 @@
-package org.passvault.core.api.vault;
+package org.passvault.core.vault;
 
-import org.passvault.core.api.entry.IEntry;
-import org.passvault.core.api.exception.VaultException;
+import org.passvault.core.entry.IEntry;
+import org.passvault.core.exception.VaultException;
 
 import java.util.Collection;
 
@@ -27,7 +27,15 @@ public interface IVault {
 	 * @param entry the entry to store
 	 * @return true if the entry was stored successfully, false otherwise
 	 */
-	boolean storeEntry(IEntry entry) throws VaultException;
+	boolean commitEntry(IEntry entry) throws VaultException;
+	
+	/**
+	 * Deletes an entry from the vault.
+	 *
+	 * @param entry the entry to delete
+	 * @return true if the entry was deleted successfully, false otherwise
+	 */
+	boolean deleteEntry(IEntry entry) throws VaultException;
 	
 	/**
 	 * Retrieves all entries from the vault.

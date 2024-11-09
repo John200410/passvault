@@ -1,6 +1,6 @@
-package org.passvault.core.api.entry.item;
+package org.passvault.core.entry.item;
 
-import org.passvault.core.api.entry.IEntry;
+import org.passvault.core.entry.IEntry;
 
 /**
  * An item that is to be contained within an {@link IEntry}.

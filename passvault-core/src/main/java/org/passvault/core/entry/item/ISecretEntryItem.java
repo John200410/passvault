@@ -1,4 +1,4 @@
-package org.passvault.core.api.entry.item;
+package org.passvault.core.entry.item;
 
 /**
  * An {@link IEntryItem} that contains a secret value. The value can be hidden so that it is not displayed.

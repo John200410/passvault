@@ -1,4 +1,4 @@
-package org.passvault.core.api.exception;
+package org.passvault.core.exception;
 
 /**
  * Exception is thrown whenever the user tries accessing a locked vault

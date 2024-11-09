@@ -1,6 +1,4 @@
-package org.passvault.core.impl.entry.item;
-
-import org.passvault.core.api.entry.item.IEntryItem;
+package org.passvault.core.entry.item;
 
 /**
  * An entry item that contains a text value.

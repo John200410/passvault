@@ -1,4 +1,4 @@
-package org.passvault.core.api.exception;
+package org.passvault.core.exception;
 
 /**
  * @author john@chav.is
