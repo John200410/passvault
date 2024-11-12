@@ -2,7 +2,6 @@ package org.passvault.client.vault;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import org.passvault.client.Main;
 import org.passvault.core.vault.IVault;
 
@@ -20,8 +19,9 @@ public class VaultForm extends JFrame {
 	private JPanel rootPanel;
 	private JList list1;
 	private JTextField searchBarTextField;
-	private JScrollPane itemPane;
+	private JScrollPane backgroundPane;
 	private JLabel backgroundLabel;
+	private JSplitPane splitPane;
 	
 	public static VaultForm open(IVault vault) {
 		final VaultForm frame = new VaultForm(vault);
@@ -54,10 +54,16 @@ public class VaultForm extends JFrame {
 					final int imageWidth = backgroundImage.getWidth();
 					final int imageHeight = backgroundImage.getHeight();
 					
-					final double imageScale = ((double) itemPane.getWidth() / imageWidth) / 2d;
+					double imageScale = ((double) backgroundPane.getHeight() / (imageHeight * 5)) / 2d;
+					int scaledImageWidth = (int) (imageWidth * imageScale);
+					int scaledImageHeight = (int) (imageHeight * imageScale);
 					
-					final int scaledImageWidth = (int) (imageWidth * imageScale);
-					final int scaledImageHeight = (int) (imageHeight * imageScale);
+					//clamp
+					if(scaledImageWidth > backgroundPane.getWidth()) {
+						final double scale = (double) scaledImageWidth / backgroundPane.getWidth();
+						scaledImageWidth = backgroundPane.getWidth();
+						scaledImageHeight = (int) (scaledImageHeight / scale);
+					}
 					
 					if(g instanceof Graphics2D g2d) {
 						final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.25f);
@@ -66,13 +72,15 @@ public class VaultForm extends JFrame {
 					
 					//draw background image
 					g.drawImage(backgroundImage,
-								itemPane.getWidth() / 2 - scaledImageWidth / 2,
-								itemPane.getHeight() / 2 - scaledImageHeight / 2,
+								backgroundPane.getWidth() / 2 - scaledImageWidth / 2,
+								backgroundPane.getHeight() / 2 - scaledImageHeight / 2,
 								scaledImageWidth, scaledImageHeight, this
 					);
 				}
 			};
-			this.itemPane.setViewport(viewport);
+			
+			this.backgroundLabel.setIcon(new ImageIcon(backgroundImage));
+			this.backgroundPane.setViewport(viewport);
 		} catch(Exception e) {
 			Main.LOGGER.warning("Failed to load background image: " + e.getMessage());
 		}
@@ -84,16 +92,15 @@ public class VaultForm extends JFrame {
 	 * @noinspection ALL
 	 */
 	private void $$$setupUI$$$() {
-		createUIComponents();
 		rootPanel = new JPanel();
-		rootPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+		rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
 		rootPanel.setMinimumSize(new Dimension(600, 300));
 		rootPanel.setPreferredSize(new Dimension(600, 500));
-		final Spacer spacer1 = new Spacer();
-		rootPanel.add(spacer1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+		splitPane = new JSplitPane();
+		rootPanel.add(splitPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
 		final JPanel panel1 = new JPanel();
 		panel1.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-		rootPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		splitPane.setLeftComponent(panel1);
 		final JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setEnabled(true);
 		scrollPane1.setInheritsPopupMenu(false);
@@ -148,10 +155,11 @@ public class VaultForm extends JFrame {
 		searchBarTextField.setName("Search");
 		searchBarTextField.setText("");
 		panel2.add(searchBarTextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-		itemPane = new JScrollPane();
-		rootPanel.add(itemPane, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		backgroundPane = new JScrollPane();
+		splitPane.setRightComponent(backgroundPane);
+		backgroundLabel = new JLabel();
 		backgroundLabel.setBackground(new Color(-16371712));
-		itemPane.setViewportView(backgroundLabel);
+		backgroundPane.setViewportView(backgroundLabel);
 	}
 	
 	/** @noinspection ALL */
@@ -159,9 +167,5 @@ public class VaultForm extends JFrame {
 	
 	private void createUIComponents() {
 		// TODO: place custom component creation code here
-		
-		
-		final ImageIcon backgroundImage = new ImageIcon("src/main/resources/logo-long.png");
-		this.backgroundLabel = new JLabel(backgroundImage);
 	}
 }

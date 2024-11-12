@@ -36,9 +36,10 @@ public class PasswordGenerator {
 			throw new GeneratorException("Cannot generate a password with so many special characters");
 		}
 		
+		//create password character array
 		final char[] password = new char[params.passwordLength()];
 		
-		//first, populate password array with random alphanumeric characters
+		//populate password array with random alphanumeric characters
 		for(int i = 0; i < password.length; i++) {
 			password[i] = params.characters()[RANDOM.nextInt(params.characters().length)];
 		}
