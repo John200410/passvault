@@ -2,5 +2,3 @@ rootProject.name = 'passvault'
 
 include 'passvault-core'
 include 'passvault-client'
-include 'passvault-server'
-
