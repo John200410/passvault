@@ -2,15 +2,13 @@ package org.passvault.client;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkIJTheme;
 import org.passvault.client.vault.VaultForm;
+import org.passvault.core.Globals;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class Main {
-	
-	public static final Logger LOGGER = Logger.getLogger("PassVault");
 	
 	public static BufferedImage ICON = null;
 
@@ -18,13 +16,13 @@ public class Main {
 		try {
 			ICON = ImageIO.read(Main.class.getResourceAsStream("/logo-icon.png"));
 		} catch(IOException e) {
-			LOGGER.warning("Error loading icon: " + e.getMessage());
+			Globals.LOGGER.warning("Error loading icon: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 	
 	public static void main(String[] args) {
-		LOGGER.info("Starting PassVault");
+		Globals.LOGGER.info("Starting PassVault");
 		
 		//setup flatlaf theme
 		FlatAtomOneDarkIJTheme.setup();

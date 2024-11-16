@@ -13,9 +13,9 @@ import org.passvault.core.vault.IVault;
 public interface IEntry {
 	
 	/**
-	 * @return the name of this entry
+	 * @return the metadata of this entry
 	 */
-	String getName();
+	EntryMetadata getMetadata();
 	
 	/**
 	 * @return an array of items in this entry

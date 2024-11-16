@@ -7,7 +7,7 @@ dependencies {
 	
 	//ui stuff
 	implementation "com.jetbrains.intellij.java:java-gui-forms-rt:+"
-	implementation "com.jgoodies:forms:1.1-preview"
+	implementation "com.jgoodies:jgoodies-forms:1.9.0"
 	
 	implementation 'com.formdev:flatlaf:3.5.1'
 	implementation 'com.formdev:flatlaf-intellij-themes:3.5.1'

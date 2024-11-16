@@ -6,6 +6,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import org.passvault.client.Main;
+import org.passvault.core.Globals;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -235,7 +236,7 @@ public class PasswordGeneratorForm extends JFrame {
 		try {
 			this.passwordTextArea.setText(PasswordGenerator.generatePassword(this.params.build()));
 		} catch(GeneratorException e) {
-			Main.LOGGER.severe("Error generating password: " + e.getMessage());
+			Globals.LOGGER.severe("Error generating password: " + e.getMessage());
 			e.printStackTrace();
 			this.passwordTextArea.setText("ERROR!!!! " + e.getMessage());
 		}

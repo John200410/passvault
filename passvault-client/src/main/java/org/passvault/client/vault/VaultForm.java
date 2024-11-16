@@ -3,6 +3,12 @@ package org.passvault.client.vault;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.passvault.client.Main;
+import org.passvault.client.vault.component.EntryPanel;
+import org.passvault.core.Globals;
+import org.passvault.core.entry.AccountEntry;
+import org.passvault.core.entry.EntryMetadata;
+import org.passvault.core.entry.item.items.PasswordItem;
+import org.passvault.core.entry.item.items.UsernameItem;
 import org.passvault.core.vault.IVault;
 
 import javax.imageio.ImageIO;
@@ -10,6 +16,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
 
 /**
  * @author john@chav.is 11/3/2024
@@ -22,6 +29,8 @@ public class VaultForm extends JFrame {
 	private JScrollPane backgroundPane;
 	private JLabel backgroundLabel;
 	private JSplitPane splitPane;
+	
+	private JScrollPane entryPane;
 	
 	public static VaultForm open(IVault vault) {
 		final VaultForm frame = new VaultForm(vault);
@@ -82,8 +91,26 @@ public class VaultForm extends JFrame {
 			this.backgroundLabel.setIcon(new ImageIcon(backgroundImage));
 			this.backgroundPane.setViewport(viewport);
 		} catch(Exception e) {
-			Main.LOGGER.warning("Failed to load background image: " + e.getMessage());
+			Globals.LOGGER.warning("Failed to load background image: " + e.getMessage());
 		}
+		
+		final EntryMetadata metadata = new EntryMetadata();
+		metadata.name = "instagram.com";
+		metadata.created = LocalDateTime.of(2004, 7, 4, 0, 0);
+		metadata.lastModified = LocalDateTime.now();
+		metadata.favorite = true;
+		
+		
+		final AccountEntry testEntry = new AccountEntry(
+				metadata,
+				new UsernameItem("Username", "i.ned.hep2"),
+				new PasswordItem("Password", "password123")
+		);
+		
+		this.entryPane = new JScrollPane();
+		this.entryPane.setViewportView(new EntryPanel(testEntry));
+		
+		this.splitPane.setRightComponent(this.entryPane);
 	}
 	
 	/**

@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/passvault-client" />
             <option value="$PROJECT_DIR$/passvault-core" />
-            <option value="$PROJECT_DIR$/passvault-server" />
           </set>
         </option>
       </GradleProjectSettings>
