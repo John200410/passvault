@@ -3,7 +3,7 @@ package org.passvault.core.vault;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.exception.VaultException;
 
-import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * A vault will securely store PassVault entries. It can be a file, a database, or any other storage mechanism.
@@ -35,12 +35,12 @@ public interface IVault {
 	void deleteEntry(Entry entry) throws VaultException;
 	
 	/**
-	 * Retrieves all entries from the vault.
+	 * Retrieves a map containing all the entries in the vault.
 	 *
-	 * @return a collection of entries
+	 * @return map of all entries
 	 * @throws Throwable
 	 */
-	Collection<Entry> getEntries() throws VaultException;
+	HashMap<String, Entry> getEntries() throws VaultException;
 	
 	/**
 	 * @return true if the vault is locked, false otherwise

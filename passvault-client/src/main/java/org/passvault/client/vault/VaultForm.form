@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.passvault.client.vault.VaultForm">
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+    <margin top="0" left="5" bottom="5" right="5"/>
     <constraints>
       <xy x="20" y="20" width="660" height="453"/>
     </constraints>
@@ -20,12 +20,14 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="84e69" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="84e69" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <splitpane position="left"/>
             </constraints>
-            <properties/>
+            <properties>
+              <minimumSize width="250" height="148"/>
+            </properties>
             <border type="none"/>
             <children>
               <scrollpane id="aac79">
@@ -39,47 +41,11 @@
                 </properties>
                 <border type="none" title="Items"/>
                 <children>
-                  <component id="92b80" class="javax.swing.JList" binding="list1" default-binding="true">
+                  <component id="92b80" class="org.passvault.client.vault.EntriesList" binding="entriesList" custom-create="true">
                     <constraints/>
                     <properties>
-                      <model>
-                        <item value="Instagram.link"/>
-                        <item value="Canvas.link"/>
-                        <item value="Walmart.link"/>
-                        <item value="BestBuy.link"/>
-                        <item value="SECU.link"/>
-                        <item value="Outlook.link"/>
-                        <item value="Amazon.link"/>
-                        <item value="Target.link"/>
-                        <item value="Supreme.link"/>
-                        <item value="Instagram.link"/>
-                        <item value="Canvas.link"/>
-                        <item value="Walmart.link"/>
-                        <item value="BestBuy.link"/>
-                        <item value="SECU.link"/>
-                        <item value="Outlook.link"/>
-                        <item value="Amazon.link"/>
-                        <item value="Target.link"/>
-                        <item value="Supreme.link"/>
-                        <item value="Instagram.link"/>
-                        <item value="Canvas.link"/>
-                        <item value="Walmart.link"/>
-                        <item value="BestBuy.link"/>
-                        <item value="SECU.link"/>
-                        <item value="Outlook.link"/>
-                        <item value="Amazon.link"/>
-                        <item value="Target.link"/>
-                        <item value="Supreme.link"/>
-                        <item value="Instagram.link"/>
-                        <item value="Canvas.link"/>
-                        <item value="Walmart.link"/>
-                        <item value="BestBuy.link"/>
-                        <item value="SECU.link"/>
-                        <item value="Outlook.link"/>
-                        <item value="Amazon.link"/>
-                        <item value="Target.link"/>
-                        <item value="Supreme.link"/>
-                      </model>
+                      <dragEnabled value="false"/>
+                      <selectionMode value="0"/>
                     </properties>
                   </component>
                 </children>
@@ -105,6 +71,14 @@
                   </component>
                 </children>
               </grid>
+              <component id="6332e" class="javax.swing.JButton" binding="newEntryButton">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="New Entry"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <scrollpane id="adc11" binding="backgroundPane">

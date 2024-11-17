@@ -8,8 +8,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.zip.ZipOutputStream;
  *
  * @author john@chav.is 9/18/2024
  */
-public class Entry {
+public class Entry implements Comparable<Entry> {
 	
 	/**
 	 * The default icon for an account entry.
@@ -32,7 +30,7 @@ public class Entry {
 	static {
 		try {
 			final BufferedImage image = ImageIO.read(Entry.class.getResourceAsStream("/default-account-icon.png"));
-			DEFAULT_ICON = image.getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+			DEFAULT_ICON = image.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
 		} catch(IOException e) {
 			Globals.LOGGER.warning("Error loading default account icon: " + e.getMessage());
 		}
@@ -58,7 +56,7 @@ public class Entry {
 		 */
 	public void saveTo(ZipOutputStream zos) throws Exception {
 		
-		final String encodedName = URLEncoder.encode(this.metadata.name, StandardCharsets.UTF_8);
+		final String encodedName = this.metadata.name;//URLEncoder.encode(this.metadata.name, StandardCharsets.UTF_8);
 		
 		//save metadata.json
 		final ZipEntry metadataEntry = new ZipEntry(encodedName + "/metadata.json");
@@ -125,4 +123,13 @@ public class Entry {
 		this.icon = icon;
 	}
 	
+	@Override
+	public int compareTo(Entry o) {
+		if(this.metadata.favorite && !o.metadata.favorite) {
+			return -1;
+		} else if(!this.metadata.favorite && o.metadata.favorite) {
+			return 1;
+		}
+		return this.metadata.name.compareTo(o.metadata.name);
+	}
 }

@@ -1,6 +1,7 @@
 package org.passvault.client;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkIJTheme;
+import org.passvault.client.vault.VaultForm;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
@@ -68,7 +69,6 @@ public class Main {
 		final FileVault vault = new FileVault(new File("test.zip"));
 		
 		try {
-			
 			vault.unlock("password".toCharArray());
 			
 			//vault.commitEntry(testEntry);
@@ -78,7 +78,7 @@ public class Main {
 		}
 		
 		
-		//VaultForm.open(null);
+		VaultForm.open(vault);
 		//LoginForm.open();
 	}
 }

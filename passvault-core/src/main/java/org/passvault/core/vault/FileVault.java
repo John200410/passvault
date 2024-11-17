@@ -7,7 +7,6 @@ import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.exception.VaultException;
 
 import java.io.*;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -114,8 +113,8 @@ public class FileVault implements IVault {
 	}
 	
 	@Override
-	public Collection<Entry> getEntries() throws VaultException {
-		return this.entries.values();
+	public HashMap<String, Entry> getEntries() throws VaultException {
+		return this.entries;
 	}
 	
 	@Override
@@ -133,6 +132,9 @@ public class FileVault implements IVault {
 				//TODO: cipher output stream
 				
 				final ZipOutputStream zos = new ZipOutputStream(fos);
+				
+				//TODO: buffered output stream so that if one entry fails to save, the whole vault isn't corrupted
+				
 				for(Entry entry : this.entries.values()) {
 					entry.saveTo(zos);
 				}

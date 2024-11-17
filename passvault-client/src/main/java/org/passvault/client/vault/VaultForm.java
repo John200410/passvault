@@ -3,17 +3,16 @@ package org.passvault.client.vault;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.passvault.client.Main;
-import org.passvault.client.vault.component.EntryPanel;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
-import org.passvault.core.entry.item.items.PasswordItem;
-import org.passvault.core.entry.item.items.UsernameItem;
 import org.passvault.core.vault.IVault;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -22,14 +21,23 @@ import java.awt.image.BufferedImage;
  */
 public class VaultForm extends JFrame {
 	
+	/**
+	 * The vault that this form is displaying
+	 */
+	private final IVault vault;
+	
+	/**
+	 * The currently selected entry
+	 */
+	private JScrollPane entryPane;
+	
 	private JPanel rootPanel;
-	private JList list1;
+	private EntriesList entriesList;
 	private JTextField searchBarTextField;
 	private JScrollPane backgroundPane;
 	private JLabel backgroundLabel;
 	private JSplitPane splitPane;
-	
-	private JScrollPane entryPane;
+	private JButton newEntryButton;
 	
 	public static VaultForm open(IVault vault) {
 		final VaultForm frame = new VaultForm(vault);
@@ -42,15 +50,63 @@ public class VaultForm extends JFrame {
 	
 	private VaultForm(IVault vault) {
 		super("PassVault");
+		this.vault = vault;
 		
 		$$$setupUI$$$();
 		this.setContentPane(this.rootPanel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		
-		this.setMinimumSize(new Dimension(600, 300));
+		this.setMinimumSize(new Dimension(800, 300));
 		this.setIconImage(Main.ICON);
 		
+		//setup search bar
+		this.searchBarTextField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateEntries();
+			}
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateEntries();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateEntries();
+			}
+		});
+		
+		//setup new entry button
+		this.newEntryButton.addActionListener(e -> {
+			
+			try {
+				String name = "Untitled";
+				int i = 1;
+				while(this.vault.getEntries().containsKey(name)) {
+					name = "Untitled (" + i++ + ")";
+				}
+				
+				final EntryMetadata metadata = new EntryMetadata();
+				metadata.name = name;
+				metadata.timeCreated = metadata.timeModified = System.currentTimeMillis();
+				metadata.favorite = false;
+				
+				final Entry entry = new Entry(metadata, null);
+				this.vault.commitEntry(entry);
+				
+				this.updateEntries();
+				
+				this.viewEntry(entry);
+			} catch(Exception ex) {
+				//TODO: exception handle
+				Globals.LOGGER.warning("Error creating new entry: " + ex.getMessage());
+				ex.printStackTrace();
+			}
+		});
+		
+		//setup background image
 		try {
 			final BufferedImage backgroundImage = ImageIO.read(this.getClass().getResourceAsStream("/logo-long.png"));
 			
@@ -92,26 +148,21 @@ public class VaultForm extends JFrame {
 		} catch(Exception e) {
 			Globals.LOGGER.warning("Failed to load background image: " + e.getMessage());
 		}
+	}
+	
+	private void viewEntry(Entry entry) {
 		
-		final EntryMetadata metadata = new EntryMetadata();
-		metadata.name = "instagram.com";
-		metadata.timeCreated = 1088913600;
-		metadata.timeModified = System.currentTimeMillis();
-		metadata.favorite = true;
+		if(entry == null) {
+			this.splitPane.setRightComponent(this.backgroundPane);
+			return;
+		}
 		
-		
-		
-		final Entry testEntry = new Entry(
-				metadata,
-				null,
-				new UsernameItem("Username", "i.ned.hep2"),
-				new PasswordItem("Password", "password123")
-		);
-		
-		this.entryPane = new JScrollPane();
-		this.entryPane.setViewportView(new EntryPanel(testEntry));
-		
+		this.entryPane.setViewportView(this.entriesList.getEntryPanel(entry));
 		this.splitPane.setRightComponent(this.entryPane);
+	}
+	
+	private void updateEntries() {
+		this.entriesList.updateEntries(this.searchBarTextField.getText());
 	}
 	
 	/**
@@ -120,14 +171,16 @@ public class VaultForm extends JFrame {
 	 * @noinspection ALL
 	 */
 	private void $$$setupUI$$$() {
+		createUIComponents();
 		rootPanel = new JPanel();
-		rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+		rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 5, 5, 5), -1, -1));
 		rootPanel.setMinimumSize(new Dimension(600, 300));
 		rootPanel.setPreferredSize(new Dimension(600, 500));
 		splitPane = new JSplitPane();
 		rootPanel.add(splitPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
 		final JPanel panel1 = new JPanel();
-		panel1.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+		panel1.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+		panel1.setMinimumSize(new Dimension(250, 148));
 		splitPane.setLeftComponent(panel1);
 		final JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setEnabled(true);
@@ -135,46 +188,9 @@ public class VaultForm extends JFrame {
 		scrollPane1.setVerticalScrollBarPolicy(22);
 		panel1.add(scrollPane1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
 		scrollPane1.setBorder(BorderFactory.createTitledBorder(null, "Items", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-		list1 = new JList();
-		final DefaultListModel defaultListModel1 = new DefaultListModel();
-		defaultListModel1.addElement("Instagram.link");
-		defaultListModel1.addElement("Canvas.link");
-		defaultListModel1.addElement("Walmart.link");
-		defaultListModel1.addElement("BestBuy.link");
-		defaultListModel1.addElement("SECU.link");
-		defaultListModel1.addElement("Outlook.link");
-		defaultListModel1.addElement("Amazon.link");
-		defaultListModel1.addElement("Target.link");
-		defaultListModel1.addElement("Supreme.link");
-		defaultListModel1.addElement("Instagram.link");
-		defaultListModel1.addElement("Canvas.link");
-		defaultListModel1.addElement("Walmart.link");
-		defaultListModel1.addElement("BestBuy.link");
-		defaultListModel1.addElement("SECU.link");
-		defaultListModel1.addElement("Outlook.link");
-		defaultListModel1.addElement("Amazon.link");
-		defaultListModel1.addElement("Target.link");
-		defaultListModel1.addElement("Supreme.link");
-		defaultListModel1.addElement("Instagram.link");
-		defaultListModel1.addElement("Canvas.link");
-		defaultListModel1.addElement("Walmart.link");
-		defaultListModel1.addElement("BestBuy.link");
-		defaultListModel1.addElement("SECU.link");
-		defaultListModel1.addElement("Outlook.link");
-		defaultListModel1.addElement("Amazon.link");
-		defaultListModel1.addElement("Target.link");
-		defaultListModel1.addElement("Supreme.link");
-		defaultListModel1.addElement("Instagram.link");
-		defaultListModel1.addElement("Canvas.link");
-		defaultListModel1.addElement("Walmart.link");
-		defaultListModel1.addElement("BestBuy.link");
-		defaultListModel1.addElement("SECU.link");
-		defaultListModel1.addElement("Outlook.link");
-		defaultListModel1.addElement("Amazon.link");
-		defaultListModel1.addElement("Target.link");
-		defaultListModel1.addElement("Supreme.link");
-		list1.setModel(defaultListModel1);
-		scrollPane1.setViewportView(list1);
+		entriesList.setDragEnabled(false);
+		entriesList.setSelectionMode(0);
+		scrollPane1.setViewportView(entriesList);
 		final JPanel panel2 = new JPanel();
 		panel2.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
 		panel1.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -183,6 +199,9 @@ public class VaultForm extends JFrame {
 		searchBarTextField.setName("Search");
 		searchBarTextField.setText("");
 		panel2.add(searchBarTextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+		newEntryButton = new JButton();
+		newEntryButton.setText("New Entry");
+		panel1.add(newEntryButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		backgroundPane = new JScrollPane();
 		splitPane.setRightComponent(backgroundPane);
 		backgroundLabel = new JLabel();
@@ -195,5 +214,18 @@ public class VaultForm extends JFrame {
 	
 	private void createUIComponents() {
 		// TODO: place custom component creation code here
+		
+		
+		this.entryPane = new JScrollPane();
+		this.entriesList = new EntriesList(this.vault);
+		this.entriesList.addListSelectionListener(e -> {
+			if(e.getValueIsAdjusting()) {
+				return;
+			}
+			
+			final Entry entry = this.entriesList.getSelectedValue();
+			this.viewEntry(entry);
+		});
 	}
+	
 }
