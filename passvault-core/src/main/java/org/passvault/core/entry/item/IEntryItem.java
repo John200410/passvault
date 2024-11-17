@@ -1,10 +1,10 @@
 package org.passvault.core.entry.item;
 
-import com.google.gson.JsonElement;
-import org.passvault.core.entry.IEntry;
+import com.google.gson.JsonObject;
+import org.passvault.core.entry.Entry;
 
 /**
- * An item that is to be contained within an {@link IEntry}.
+ * An item that is to be contained within an {@link Entry}.
  * <p>
  * This can be a text item, hidden text item, TOTP item, etc.
  *
@@ -43,10 +43,10 @@ public interface IEntryItem<T> {
 	boolean isDirty(boolean clean);
 	
 	/**
-	 * Serializes the item to a JsonElement
+	 * Serializes the item to a JsonObject
 	 *
 	 * @return the serialized item
 	 */
-	JsonElement serialize();
+	JsonObject serialize();
 	
 }

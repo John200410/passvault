@@ -1,7 +1,7 @@
 package org.passvault.client.vault.component;
 
 import com.jgoodies.forms.layout.*;
-import org.passvault.core.entry.IEntry;
+import org.passvault.core.entry.Entry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +16,9 @@ public class EntryPanel extends JPanel {
 	/**
 	 * The entry that this pane is displaying
 	 */
-	private final IEntry entry;
+	private final Entry entry;
 	
-	public EntryPanel(IEntry entry) {
+	public EntryPanel(Entry entry) {
 		this.entry = entry;
 		
 		//darker background
@@ -64,7 +64,7 @@ public class EntryPanel extends JPanel {
 		
 		private final JTextArea nameTextArea;
 		
-		public EntryMetadataComponent(EntryPanel parent, IEntry entry) {
+		public EntryMetadataComponent(EntryPanel parent, Entry entry) {
 			
 			//this.setBackground(new Color(40, 42, 51));
 			this.setBackground(parent.getBackground().brighter());

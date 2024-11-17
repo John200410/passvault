@@ -5,7 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.passvault.client.Main;
 import org.passvault.client.vault.component.EntryPanel;
 import org.passvault.core.Globals;
-import org.passvault.core.entry.AccountEntry;
+import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
 import org.passvault.core.entry.item.items.PasswordItem;
 import org.passvault.core.entry.item.items.UsernameItem;
@@ -16,7 +16,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.time.LocalDateTime;
 
 /**
  * @author john@chav.is 11/3/2024
@@ -96,13 +95,15 @@ public class VaultForm extends JFrame {
 		
 		final EntryMetadata metadata = new EntryMetadata();
 		metadata.name = "instagram.com";
-		metadata.created = LocalDateTime.of(2004, 7, 4, 0, 0);
-		metadata.lastModified = LocalDateTime.now();
+		metadata.timeCreated = 1088913600;
+		metadata.timeModified = System.currentTimeMillis();
 		metadata.favorite = true;
 		
 		
-		final AccountEntry testEntry = new AccountEntry(
+		
+		final Entry testEntry = new Entry(
 				metadata,
+				null,
 				new UsernameItem("Username", "i.ned.hep2"),
 				new PasswordItem("Password", "password123")
 		);

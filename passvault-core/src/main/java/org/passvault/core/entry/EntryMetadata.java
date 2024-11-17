@@ -1,7 +1,5 @@
 package org.passvault.core.entry;
 
-import java.time.LocalDateTime;
-
 /**
  * Object containing metadata for an {@link IEntry}.
  *
@@ -10,8 +8,8 @@ import java.time.LocalDateTime;
 public class EntryMetadata {
 	
 	public String name;
-	public LocalDateTime created;
-	public LocalDateTime lastModified;
+	public long timeCreated;
+	public long timeModified;
 	public boolean favorite;
 	
 }

@@ -1,7 +1,6 @@
 package org.passvault.core.entry.item.items;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.passvault.core.entry.item.ItemBase;
 import org.passvault.core.entry.item.ItemType;
@@ -23,7 +22,7 @@ public class UrlItem extends ItemBase<String[]> {
 	}
 	
 	@Override
-	public JsonElement serialize() {
+	public JsonObject serialize() {
 		final JsonObject obj = new JsonObject();
 		obj.addProperty("type", this.type.name());
 		obj.addProperty("name", this.name);
