@@ -50,37 +50,88 @@ public class EntryPanel extends JPanel {
 		 */
 		
 		//metadata panel
-		final EntryMetadataComponent metadataComponent = new EntryMetadataComponent(this, entry);
+		final EntryNameComponent metadataComponent = new EntryNameComponent(this, entry);
 		this.add(metadataComponent, c.xy(2, 2));
 		
 		layout.insertRow(3, gapRowSpec);
 		layout.insertRow(4, rowSpec);
 		
-		
-		this.add( new EntryMetadataComponent(this, entry), c.xy(2, 4));
+		//this.add(new EntryNameComponent(this, entry), c.xy(2, 4));
+	}
+
+	public Entry getEntry() {
+		return this.entry;
 	}
 	
-	class EntryMetadataComponent extends JPanel {
+	public void update() {
+		for(Component component : this.getComponents()) {
+			if(component instanceof EntryComponent entryComponent) {
+				entryComponent.updateComponents();
+			}
+		}
+	}
+	
+	public void enableEditingMode() {
+		for(Component component : this.getComponents()) {
+			if(component instanceof EntryComponent entryComponent) {
+				entryComponent.enableEditMode();
+			}
+		}
+	}
+	
+	public void disableEditingMode(boolean save) throws Exception {
+		for(Component component : this.getComponents()) {
+			if(component instanceof EntryComponent entryComponent) {
+				entryComponent.disableEditMode(save);
+			}
+		}
+	}
+	
+	static class EntryNameComponent extends EntryComponent {
 		
-		private final JTextArea nameTextArea;
+		private JTextArea nameTextArea;
 		
-		public EntryMetadataComponent(EntryPanel parent, Entry entry) {
+		public EntryNameComponent(EntryPanel parent, Entry entry) {
+			super(parent, entry);
+			this.nameTextArea.setEditable(false);
+		}
+		
+		@Override
+		public void addComponents(GridBagConstraints c) {
 			
-			//this.setBackground(new Color(40, 42, 51));
-			this.setBackground(parent.getBackground().brighter());
-			
-			this.setLayout(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.insets = new Insets(5, 5, 5, 5);
-			c.weightx = 1;
-			c.gridx = 0;
+			this.nameTextArea = new JTextArea();
 			
 			final JLabel nameLabel = new JLabel("Name", SwingConstants.LEFT);
-			this.nameTextArea = new JTextArea(entry.getMetadata().name);
-			
 			this.add(nameLabel, c);
-			this.add(nameTextArea, c);
+			this.add(this.nameTextArea, c);
+		}
+		
+		@Override
+		public void updateComponents() {
+			if(!this.nameTextArea.isEditable()) {
+				this.nameTextArea.setText(this.entry.getMetadata().name);
+			}
+		}
+		
+		@Override
+		public void enableEditMode() {
+			this.nameTextArea.setEditable(true);
+		}
+		
+		@Override
+		public void disableEditMode(boolean apply) throws Exception {
+			
+			if(apply) {
+				if(this.nameTextArea.getText().isBlank()) {
+					throw new Exception("Name cannot be blank");
+				}
+				
+				//TODO: check for duplicate name
+				
+				this.entry.getMetadata().name = this.nameTextArea.getText();
+			}
+			
+			this.nameTextArea.setEditable(false);
 		}
 	}
 	

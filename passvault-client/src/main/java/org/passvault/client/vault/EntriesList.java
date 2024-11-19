@@ -1,16 +1,15 @@
 package org.passvault.client.vault;
 
-import org.passvault.client.vault.component.EntryPanel;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.passvault.client.vault.component.EntryContainer;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.vault.IVault;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,21 +24,23 @@ import java.util.HashMap;
  */
 public class EntriesList extends JList<Entry> {
 	
+	private final VaultForm vaultForm;
 	private final IVault vault;
 	
 	/**
 	 * A map of entries to their corresponding panels.
 	 */
-	private final HashMap<Entry, EntryPanel> entryPanels = new HashMap<>();
+	private final HashMap<Entry, EntryContainer> entryContainers = new HashMap<>();
 	
-	public EntriesList(IVault vault) {
+	public EntriesList(VaultForm vaultForm, IVault vault) {
 		super(new EntriesListModel(vault));
+		this.vaultForm = vaultForm;
 		this.vault = vault;
 		
 		this.setCellRenderer(new EntryListCellRenderer());
 		
+		//selection model that lets you toggle the selection
 		this.setSelectionModel(new DefaultListSelectionModel() {
-			
 			@Override
 			public void setSelectionInterval(int index0, int index1) {
 				if (index0==index1) {
@@ -82,11 +83,17 @@ public class EntriesList extends JList<Entry> {
 	}
 	
 	public void updateEntries(String filter) {
+		final Entry entry = this.getSelectedValue();
 		((EntriesListModel)this.getModel()).updateEntries(filter);
+		
+		//keep the same entry selected
+		if(entry != null) {
+			this.setSelectedValue(entry, true);
+		}
 	}
 	
-	public EntryPanel getEntryPanel(Entry entry) {
-		return this.entryPanels.computeIfAbsent(entry, e -> new EntryPanel(entry));
+	public EntryContainer getEntryContainer(Entry entry) {
+		return this.entryContainers.computeIfAbsent(entry, e -> new EntryContainer(this.vaultForm, entry));
 	}
 	
 	private static class EntriesListModel extends AbstractListModel<Entry> {
@@ -102,7 +109,7 @@ public class EntriesList extends JList<Entry> {
 		private void updateEntries(String filter) {
 			this.entries.clear();
 			try {
-				this.entries.addAll(this.vault.getEntries().values());
+				this.entries.addAll(this.vault.getEntries());
 			} catch(Exception e) {
 				//TODO: handle exception
 				throw new RuntimeException("Error getting entries from vault: " + e.getMessage(), e);
@@ -127,22 +134,19 @@ public class EntriesList extends JList<Entry> {
 		public int getSize() {
 			return this.entries.size();
 		}
-		
-		
-		
 	}
 	
+	/**
+	 * Custom cell renderer that displays the entry's icon and name, and a favorite icon if the entry is favorited.
+	 */
 	private static class EntryListCellRenderer extends DefaultListCellRenderer {
 		
-		private static ImageIcon favoritedIcon = null;
+		private static ImageIcon favoritedIcon;
 		private static final HashMap<Image, ImageIcon> iconCache = new HashMap<>();
 		
 		static {
 			try {
-				final Image image = ImageIO.read(EntryListCellRenderer.class.getResourceAsStream("/favorite-icon.png"))
-													.getScaledInstance(16, 16, BufferedImage.SCALE_SMOOTH);
-				
-				favoritedIcon = new ImageIcon(image);
+				favoritedIcon = new FlatSVGIcon(EntryListCellRenderer.class.getResourceAsStream("/favorite.svg"));
 			} catch(IOException e) {
 				Globals.LOGGER.warning("Error loading favorite icon: " + e.getMessage());
 			}

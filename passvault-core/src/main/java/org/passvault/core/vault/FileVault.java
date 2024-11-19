@@ -8,6 +8,7 @@ import org.passvault.core.exception.VaultException;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -31,7 +32,7 @@ public class FileVault implements IVault {
 	/**
 	 * A collection of entries of this vault.
 	 */
-	private HashMap<String, Entry> entries = null;
+	private HashSet<Entry> entries = null;
 	
 	public FileVault(File file) {
 		this.file = file;
@@ -82,7 +83,7 @@ public class FileVault implements IVault {
 			
 			zis.close();
 			
-			this.entries = entries;
+			this.entries = new HashSet<>(entries.values());
 		} catch(FileNotFoundException e) {
 			throw new VaultException("Vault file not found", e);
 		} catch(IOException e) {
@@ -97,7 +98,7 @@ public class FileVault implements IVault {
 			//TODO: throw exception
 		}
 		
-		this.entries.put(entry.getMetadata().name, entry);
+		this.entries.add(entry);
 		this.save();
 	}
 	
@@ -108,12 +109,12 @@ public class FileVault implements IVault {
 			//TODO: throw exception
 		}
 		
-		this.entries.remove(entry.getMetadata().name);
+		this.entries.remove(entry);
 		this.save();
 	}
 	
 	@Override
-	public HashMap<String, Entry> getEntries() throws VaultException {
+	public HashSet<Entry> getEntries() throws VaultException {
 		return this.entries;
 	}
 	
@@ -135,7 +136,7 @@ public class FileVault implements IVault {
 				
 				//TODO: buffered output stream so that if one entry fails to save, the whole vault isn't corrupted
 				
-				for(Entry entry : this.entries.values()) {
+				for(Entry entry : this.entries) {
 					entry.saveTo(zos);
 				}
 				zos.close();

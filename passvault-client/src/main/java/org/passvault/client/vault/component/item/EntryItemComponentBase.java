@@ -1,6 +1,8 @@
 package org.passvault.client.vault.component.item;
 
+import org.passvault.client.vault.component.EntryComponent;
 import org.passvault.client.vault.component.EntryPanel;
+import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
 
 import javax.swing.*;
@@ -9,16 +11,14 @@ import java.util.StringJoiner;
 /**
  * @author john@chav.is 11/14/2024
  */
-public abstract class EntryItemComponentBase<T extends IEntryItem> extends JPanel {
-	
-	protected final EntryPanel parent;
-	
+public abstract class EntryItemComponentBase<T extends IEntryItem> extends EntryComponent {
+
 	protected final T item;
 	protected final JComponent labelComponent;
 	protected final JComponent valueComponent;
 	
-	public EntryItemComponentBase(EntryPanel parent, T item) {
-		this.parent = parent;
+	public EntryItemComponentBase(EntryPanel parent, Entry entry, T item) {
+		super(parent, entry);
 		this.item = item;
 		
 		this.add(this.labelComponent = this.createLabelComponent(item));
@@ -33,7 +33,8 @@ public abstract class EntryItemComponentBase<T extends IEntryItem> extends JPane
 		}
 	}
 	
-	protected void updateComponents() {
+	@Override
+	public void updateComponents() {
 		if(this.labelComponent instanceof JLabel label) {
 			label.setText(this.item.getName());
 		}

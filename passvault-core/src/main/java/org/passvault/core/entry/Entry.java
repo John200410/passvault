@@ -130,6 +130,6 @@ public class Entry implements Comparable<Entry> {
 		} else if(!this.metadata.favorite && o.metadata.favorite) {
 			return 1;
 		}
-		return this.metadata.name.compareTo(o.metadata.name);
+		return this.metadata.name.toLowerCase().compareTo(o.metadata.name.toLowerCase());
 	}
 }
