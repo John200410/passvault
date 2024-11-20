@@ -15,7 +15,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 
 	protected final T item;
 	protected JLabel itemNameLabel;
-	protected JTextArea itemNameTextArea;
+	protected ValueTextField itemNameTextComponent;
 	
 	protected ValueTextComponent valueTextComponent;
 	
@@ -35,8 +35,8 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		
 		this.itemNameLabel.setText(this.item.getName());
 		
-		if(!this.itemNameTextArea.isEditable()) {
-			this.itemNameTextArea.setText(this.item.getName());
+		if(!this.itemNameTextComponent.isEditable()) {
+			this.itemNameTextComponent.setText(this.item.getName());
 		}
 		
 		if(!this.valueTextComponent.isEditable()) {
@@ -55,11 +55,12 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		
 		this.add(this.itemNameLabel, c);
 		
-		this.itemNameTextArea = new JTextArea();
-		this.itemNameTextArea.setVisible(false);
-		this.itemNameTextArea.setEditable(false);
+		//TODO character limit
+		this.itemNameTextComponent = new ValueTextField();
+		this.itemNameTextComponent.setVisible(false);
+		this.itemNameTextComponent.setEditable(false);
 		
-		this.add(this.itemNameTextArea, c);
+		this.add(this.itemNameTextComponent, c);
 		
 		this.valueTextComponent = this.createValueTextComponent();
 		this.valueTextComponent.setEditable(false);
@@ -70,8 +71,8 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	public void enableEditMode() {
 		this.itemNameLabel.setVisible(false);
 		
-		this.itemNameTextArea.setVisible(true);
-		this.itemNameTextArea.setEditable(true);
+		this.itemNameTextComponent.setVisible(true);
+		this.itemNameTextComponent.setEditable(true);
 		
 		this.valueTextComponent.setEditable(true);
 	}
@@ -84,8 +85,8 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		
 		this.itemNameLabel.setVisible(true);
 		
-		this.itemNameTextArea.setVisible(false);
-		this.itemNameTextArea.setEditable(false);
+		this.itemNameTextComponent.setVisible(false);
+		this.itemNameTextComponent.setEditable(false);
 		
 		this.valueTextComponent.setEditable(false);
 	}
