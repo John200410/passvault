@@ -43,7 +43,7 @@ public class EntryContainer extends Container {
 		this.vaultForm = vaultForm;
 		
 		
-		this.entryPanel = new EntryPanel(entry);
+		this.entryPanel = new EntryPanel(this, entry);
 		this.entry = entry;
 		
 		this.setLayout(new BorderLayout());
@@ -99,6 +99,18 @@ public class EntryContainer extends Container {
 		});
 		this.toolBar.add(this.deleteButton);
 		
+		//TODO: this is for debug purposes only
+		this.toolBar.add(new JButton(new AbstractAction("Reset") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(editMode) {
+					disableEditingMode(false);
+				}
+				
+				entryPanel.rebuildComponents(true);
+			}
+		}));
+		
 		this.toolBar.add(Box.createHorizontalGlue());
 		
 		this.favoriteCheckBox = new JCheckBox("Favorite", entry.getMetadata().favorite);
@@ -142,6 +154,7 @@ public class EntryContainer extends Container {
 		if(save) {
 			try {
 				this.vaultForm.getVault().commitEntry(this.entry);
+				this.vaultForm.updateEntryList();
 			} catch (Exception e) {
 				//TODO: error handle
 				Globals.LOGGER.severe("Error committing entry");
@@ -153,10 +166,25 @@ public class EntryContainer extends Container {
 		this.editButton.setVisible(true);
 		this.cancelButton.setVisible(false);
 		this.saveButton.setVisible(false);
+		
+		this.entryPanel.rebuildComponents(true);
 	}
 	
 	public void update() {
 		this.entryPanel.update();
+		
+		if(this.entryPanel.shouldRepaint) {
+			this.entryPanel.shouldRepaint = false;
+			SwingUtilities.invokeLater(this.entryPanel::repaint);
+		}
+	}
+	
+	public VaultForm getVaultForm() {
+		return this.vaultForm;
+	}
+	
+	public boolean isEditMode() {
+		return this.editMode;
 	}
 	
 }

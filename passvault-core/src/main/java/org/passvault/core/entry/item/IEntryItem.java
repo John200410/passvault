@@ -23,9 +23,25 @@ public interface IEntryItem<T> {
 	String getName();
 	
 	/**
+	 * Sets the name of this item
+	 *
+	 * @param name the new name
+	 * @throws ItemException if the name cannot be set to the new name
+	 */
+	void setName(String name) throws ItemException;
+	
+	/**
 	 * @return the value of this item
 	 */
 	T getValue();
+	
+	/**
+	 * Sets the value of this item
+	 *
+	 * @param value the new value
+	 * @throws ItemException if the value cannot be set to the new value
+	 */
+	void setValue(T value) throws ItemException;
 	
 	/**
 	 * @return a String representation of the value

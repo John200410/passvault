@@ -44,6 +44,15 @@ public abstract class ItemBase<T> implements IEntryItem<T> {
 		return this.name;
 	}
 	
+	public void setName(String name) throws ItemException {
+		if(name.isBlank()) {
+			throw new ItemException("Name cannot be blank");
+		}
+		
+		this.name = name;
+		this.dirty = true;
+	}
+	
 	@Override
 	public ItemType getType() {
 		return this.type;
@@ -52,6 +61,16 @@ public abstract class ItemBase<T> implements IEntryItem<T> {
 	@Override
 	public T getValue() {
 		return this.value;
+	}
+	
+	@Override
+	public void setValue(T value) throws ItemException {
+		if (value == null) {
+			throw new ItemException("Value cannot be null");
+		}
+		this.value = value;
+		this.dirty = true;
+		
 	}
 	
 	@Override

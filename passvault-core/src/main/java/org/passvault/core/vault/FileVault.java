@@ -78,6 +78,8 @@ public class FileVault implements IVault {
 					}
 				}
 				
+				//TODO: read other files as resources
+				
 				zis.closeEntry();
 			}
 			

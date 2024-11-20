@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -23,22 +22,9 @@ import java.util.zip.ZipOutputStream;
  */
 public class Entry implements Comparable<Entry> {
 	
-	/**
-	 * The default icon for an account entry.
-	 */
-	public static Image DEFAULT_ICON = null;
-	static {
-		try {
-			final BufferedImage image = ImageIO.read(Entry.class.getResourceAsStream("/default-account-icon.png"));
-			DEFAULT_ICON = image.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-		} catch(IOException e) {
-			Globals.LOGGER.warning("Error loading default account icon: " + e.getMessage());
-		}
-	}
-	
 	protected EntryMetadata metadata;
 	protected BufferedImage icon;
-	protected final List<IEntryItem<?>> items = new ArrayList<>();
+	protected final ArrayList<IEntryItem<?>> items = new ArrayList<>();
 	
 	public Entry() {}
 	
@@ -91,7 +77,7 @@ public class Entry implements Comparable<Entry> {
 	/**
 	 * @return an array of items in this entry
 	 */
-	public List<IEntryItem<?>> getItems() {
+	public ArrayList<IEntryItem<?>> getItems() {
 		return this.items;
 	}
 	
@@ -99,9 +85,6 @@ public class Entry implements Comparable<Entry> {
 	 * @return an image representing this entry
 	 */
 	public Image getIcon() {
-		if(this.icon == null) {
-			return DEFAULT_ICON;
-		}
 		return this.icon;
 	}
 	

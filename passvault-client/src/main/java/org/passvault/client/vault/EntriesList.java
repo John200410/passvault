@@ -150,6 +150,13 @@ public class EntriesList extends JList<Entry> {
 			} catch(IOException e) {
 				Globals.LOGGER.warning("Error loading favorite icon: " + e.getMessage());
 			}
+			
+			try {
+				final FlatSVGIcon icon = new FlatSVGIcon(EntryListCellRenderer.class.getResourceAsStream("/account-default.svg"));
+				iconCache.put(null, icon.derive(24, 24));
+			} catch(IOException e) {
+				Globals.LOGGER.warning("Error loading default account icon: " + e.getMessage());
+			}
 		}
 		
 		private final JLabel favoriteLabel = new JLabel(favoritedIcon, LEFT);
@@ -167,7 +174,7 @@ public class EntriesList extends JList<Entry> {
 			if(value instanceof Entry entry) {
 				this.container.removeAll();
 				
-				this.setIcon(iconCache.computeIfAbsent(entry.getIcon(), image -> new ImageIcon(image)));
+				this.setIcon(iconCache.computeIfAbsent(entry.getIcon(), ImageIcon::new));
 				this.setText(entry.getMetadata().name);
 				
 				if(entry.getMetadata().favorite) {

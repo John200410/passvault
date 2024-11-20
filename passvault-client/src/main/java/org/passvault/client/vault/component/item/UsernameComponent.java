@@ -1,38 +1,21 @@
 package org.passvault.client.vault.component.item;
 
+import org.passvault.client.vault.component.EntryPanel;
+import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.items.UsernameItem;
-
-import javax.swing.*;
 
 /**
  * @author john@chav.is 11/14/2024
  */
-public class UsernameComponent extends JPanel {
+public class UsernameComponent extends EntryItemComponentBase<UsernameItem> {
 	
-	/**
-	 * The label
-	 */
-	private final JLabel usernameLabel;
-	
-	/**
-	 * The text field
-	 */
-	private final JTextField usernameField;
-	
-	public UsernameComponent(UsernameItem item) {
-		this.usernameLabel = new JLabel("Username: ");
-		this.usernameField = new JTextField(item.getValue());
-		
-		this.add(this.usernameLabel);
-		this.add(this.usernameField);
+	public UsernameComponent(EntryPanel parent, Entry entry, UsernameItem item) {
+		super(parent, entry, item);
 	}
 	
-	public String getUsername() {
-		return this.usernameField.getText();
+	@Override
+	protected void attemptApply() throws Exception {
+		this.item.setName(this.itemNameTextArea.getText());
+		this.item.setValue(this.valueTextArea.getText());
 	}
-	
-	public void setUsername(String username) {
-		this.usernameField.setText(username);
-	}
-	
 }
