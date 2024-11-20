@@ -9,11 +9,6 @@ import com.google.gson.JsonObject;
  */
 public abstract class TextItemBase extends ItemBase<String> {
 	
-	/**
-	 * Cache so that we dont need to create a new array every time
-	 */
-	protected final String[] cachedDisplayValue = new String[1];
-	
 	public TextItemBase(ItemType type, String value) {
 		super(type, value);
 	}
@@ -23,13 +18,8 @@ public abstract class TextItemBase extends ItemBase<String> {
 	}
 	
 	@Override
-	public String[] getDisplayValue() {
-		return this.cachedDisplayValue;
-	}
-	
-	@Override
-	public void update() {
-		this.cachedDisplayValue[0] = this.value;
+	public String getDisplayValue() {
+		return this.value;
 	}
 	
 	@Override

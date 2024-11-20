@@ -16,6 +16,6 @@ public class UsernameComponent extends EntryItemComponentBase<UsernameItem> {
 	@Override
 	protected void attemptApply() throws Exception {
 		this.item.setName(this.itemNameTextArea.getText());
-		this.item.setValue(this.valueTextArea.getText());
+		this.item.setValue(this.valueTextComponent.getText());
 	}
 }

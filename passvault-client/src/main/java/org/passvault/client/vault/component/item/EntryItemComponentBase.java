@@ -7,7 +7,6 @@ import org.passvault.core.entry.item.IEntryItem;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.StringJoiner;
 
 /**
  * @author john@chav.is 11/14/2024
@@ -18,7 +17,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	protected JLabel itemNameLabel;
 	protected JTextArea itemNameTextArea;
 	
-	protected JTextArea valueTextArea;
+	protected ValueTextComponent valueTextComponent;
 	
 	public EntryItemComponentBase(EntryPanel parent, Entry entry, T item) {
 		super(parent, entry);
@@ -40,15 +39,8 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 			this.itemNameTextArea.setText(this.item.getName());
 		}
 		
-		if(!this.valueTextArea.isEditable()) {
-			String[] displayValue = this.item.getDisplayValue();
-			if (displayValue != null) {
-				final StringJoiner sj = new StringJoiner("\n");
-				for (String value : displayValue) {
-					sj.add(value);
-				}
-				this.valueTextArea.setText(sj.toString());
-			}
+		if(!this.valueTextComponent.isEditable()) {
+			this.valueTextComponent.setText(this.item.getDisplayValue());
 		}
 		
 		//TODO: do i need this
@@ -69,8 +61,8 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		
 		this.add(this.itemNameTextArea, c);
 		
-		this.valueTextArea = new JTextArea();
-		this.valueTextArea.setEditable(false);
+		this.valueTextComponent = this.createValueTextComponent();
+		this.valueTextComponent.setEditable(false);
 		this.add(getValueComponent(), c);
 	}
 	
@@ -81,7 +73,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextArea.setVisible(true);
 		this.itemNameTextArea.setEditable(true);
 		
-		this.valueTextArea.setEditable(true);
+		this.valueTextComponent.setEditable(true);
 	}
 	
 	@Override
@@ -95,25 +87,71 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextArea.setVisible(false);
 		this.itemNameTextArea.setEditable(false);
 		
-		this.valueTextArea.setEditable(false);
-		
-		//get rid of carets cuz it still renders for some reason
-		for(Component component : this.getComponents()) {
-			if(component instanceof JTextArea c) {
-				c.setFocusable(false);
-				c.setFocusable(true);
-			}
-		}
+		this.valueTextComponent.setEditable(false);
 	}
 	
 	public T getItem() {
 		return this.item;
 	}
 	
+	protected ValueTextComponent createValueTextComponent() {
+		return new ValueTextField();
+	}
+	
 	protected JComponent getValueComponent() {
-		return this.valueTextArea;
+		return this.valueTextComponent.getComponent();
 	}
 	
 	protected abstract void attemptApply() throws Exception;
+	
+	public static interface ValueTextComponent {
+		
+		String getText();
+		
+		void setText(String text);
+		
+		boolean isEditable();
+		
+		void setEditable(boolean editable);
+		
+		JComponent getComponent();
+		
+	}
+	
+	public static class ValueTextField extends JTextField implements ValueTextComponent {
+		
+		public ValueTextField() {
+			super();
+			this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		}
+		
+		@Override
+		public JComponent getComponent() {
+			return this;
+		}
+	}
+	
+	public static class ValueTextArea extends JTextArea implements ValueTextComponent {
+		
+		public ValueTextArea() {
+			super();
+		}
+		
+		@Override
+		public void setEditable(boolean b) {
+			super.setEditable(b);
+			
+			//get rid of carets cuz they still render for some reason
+			if(!b) {
+				this.setFocusable(false);
+				this.setFocusable(true);
+			}
+		}
+		
+		@Override
+		public JComponent getComponent() {
+			return this;
+		}
+	}
 	
 }

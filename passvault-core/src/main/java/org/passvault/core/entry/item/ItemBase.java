@@ -70,7 +70,6 @@ public abstract class ItemBase<T> implements IEntryItem<T> {
 		}
 		this.value = value;
 		this.dirty = true;
-		
 	}
 	
 	@Override

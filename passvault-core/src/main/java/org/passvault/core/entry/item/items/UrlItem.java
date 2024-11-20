@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import org.passvault.core.entry.item.ItemBase;
 import org.passvault.core.entry.item.ItemType;
 
+import java.util.StringJoiner;
+
 /**
  * An item that is used to store the URLs that this account can be accessed from.
  *
@@ -17,8 +19,12 @@ public class UrlItem extends ItemBase<String[]> {
 	}
 	
 	@Override
-	public String[] getDisplayValue() {
-		return this.value;
+	public String getDisplayValue() {
+		final StringJoiner sj = new StringJoiner("\n");
+		for (String value : this.value) {
+			sj.add(value);
+		}
+		return sj.toString();
 	}
 	
 	@Override

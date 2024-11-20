@@ -46,7 +46,7 @@ public interface IEntryItem<T> {
 	/**
 	 * @return a String representation of the value
 	 */
-	String[] getDisplayValue();
+	String getDisplayValue();
 	
 	/**
 	 * Updates this item. This gets called frequently

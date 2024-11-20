@@ -26,7 +26,7 @@ public class EntryPanel extends JPanel {
 	 * Constants
 	 */
 	private static final ColumnSpec COLUMN_GAP_SPEC = ColumnSpec.createGap(new ConstantSize(15, ConstantSize.DLUX));
-	private static final ColumnSpec COLUMN_SPEC = new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW);
+	private static final ColumnSpec COLUMN_SPEC = new ColumnSpec(ColumnSpec.FILL, Sizes.DLUX1, FormSpec.DEFAULT_GROW);
 	private static final RowSpec GAP_ROW_SPEC = RowSpec.createGap(new ConstantSize(10, ConstantSize.DLUY));
 	private static final RowSpec ROW_SPEC = new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.NO_GROW);
 	
@@ -243,7 +243,7 @@ public class EntryPanel extends JPanel {
 	 */
 	private static class EntryNameComponent extends EntryComponent {
 		
-		private JTextArea nameTextArea;
+		private JTextField nameValueTextField;
 		
 		public EntryNameComponent(EntryPanel parent, Entry entry) {
 			super(parent, entry);
@@ -257,44 +257,40 @@ public class EntryPanel extends JPanel {
 		@Override
 		public void addComponents(GridBagConstraints c) {
 			
-			this.nameTextArea = new JTextArea();
-			this.nameTextArea.setEditable(false);
+			this.nameValueTextField = new EntryItemComponentBase.ValueTextField();
+			this.nameValueTextField.setEditable(false);
 			
 			final JLabel nameLabel = new JLabel("Name", SwingConstants.LEFT);
 			this.add(nameLabel, c);
-			this.add(this.nameTextArea, c);
+			this.add(this.nameValueTextField, c);
 		}
 		
 		@Override
 		public void updateComponents() {
-			if(!this.nameTextArea.isEditable()) {
-				this.nameTextArea.setText(this.entry.getMetadata().name);
+			if(!this.nameValueTextField.isEditable()) {
+				this.nameValueTextField.setText(this.entry.getMetadata().name);
 			}
 		}
 		
 		@Override
 		public void enableEditMode() {
-			this.nameTextArea.setEditable(true);
+			this.nameValueTextField.setEditable(true);
 		}
 		
 		@Override
 		public void disableEditMode(boolean apply) throws Exception {
 			
 			if(apply) {
-				if(this.nameTextArea.getText().isBlank()) {
+				if(this.nameValueTextField.getText().isBlank()) {
 					throw new Exception("Name cannot be blank");
 				}
 				
 				//TODO: check for duplicate name
 				
-				this.entry.getMetadata().name = this.nameTextArea.getText();
+				this.entry.getMetadata().name = this.nameValueTextField.getText();
 			}
 			
-			this.nameTextArea.setEditable(false);
-			
-			//get rid of caret cuz it still renders for some reason
-			this.nameTextArea.setFocusable(false);
-			this.nameTextArea.setFocusable(true);
+			this.nameValueTextField.setEditable(false);
 		}
 	}
 	
