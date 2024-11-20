@@ -2,9 +2,11 @@ package org.passvault.client.vault.component;
 
 import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.EntryItemComponentBase;
+import org.passvault.client.vault.component.item.PasswordComponent;
 import org.passvault.client.vault.component.item.UsernameComponent;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
+import org.passvault.core.entry.item.items.PasswordItem;
 import org.passvault.core.entry.item.items.UsernameItem;
 
 import javax.swing.*;
@@ -62,8 +64,17 @@ public class EntryPanel extends JPanel {
 		//create add button to add a new item
 		this.addButton = new JButton("Add");
 		this.addButton.addActionListener(e -> {
+			
+			/*
 			final UsernameItem testItem = new UsernameItem("Username Test", "test username");
 			final UsernameComponent testEntry = new UsernameComponent(this, this.entry, testItem);
+			
+			 */
+			
+			final PasswordItem testItem = new PasswordItem("Password Test", "password123");
+			final PasswordComponent testEntry = new PasswordComponent(this, this.entry, testItem);
+			
+			//make new entries more visible
 			testEntry.setBackground(testEntry.getBackground().brighter());
 			
 			this.pendingComponents.add(testEntry);
@@ -106,6 +117,8 @@ public class EntryPanel extends JPanel {
 			for(IEntryItem<?> item : this.entry.getItems()) {
 				if(item instanceof UsernameItem usernameItem) {
 					this.itemComponents.add(new UsernameComponent(this, entry, usernameItem));
+				} else if(item instanceof PasswordItem passwordItem) {
+					this.itemComponents.add(new PasswordComponent(this, entry, passwordItem));
 				}
 			}
 		}

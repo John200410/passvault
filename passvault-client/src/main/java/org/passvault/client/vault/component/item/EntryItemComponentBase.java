@@ -19,9 +19,15 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	
 	protected ValueTextComponent valueTextComponent;
 	
+	private GridBagConstraints constraints;
+	
 	public EntryItemComponentBase(EntryPanel parent, Entry entry, T item) {
 		super(parent, entry);
 		this.item = item;
+		
+		this.valueTextComponent = this.createValueTextComponent();
+		this.valueTextComponent.setEditable(false);
+		this.add(getValueComponent(), this.constraints);
 		
 		this.updateComponents();
 		if(this.parent.getContainer().isEditMode()) {
@@ -51,6 +57,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	
 	@Override
 	public void addComponents(GridBagConstraints c) {
+		this.constraints = c;
 		this.itemNameLabel = new JLabel();
 		
 		this.add(this.itemNameLabel, c);
@@ -61,10 +68,6 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextComponent.setEditable(false);
 		
 		this.add(this.itemNameTextComponent, c);
-		
-		this.valueTextComponent = this.createValueTextComponent();
-		this.valueTextComponent.setEditable(false);
-		this.add(getValueComponent(), c);
 	}
 	
 	@Override
@@ -96,6 +99,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	}
 	
 	protected ValueTextComponent createValueTextComponent() {
+		if(this.item.getType().isSecret()) {
+			return new PasswordTextComponent();
+		}
 		return new ValueTextField();
 	}
 	
@@ -119,19 +125,6 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		
 	}
 	
-	public static class ValueTextField extends JTextField implements ValueTextComponent {
-		
-		public ValueTextField() {
-			super();
-			this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		}
-		
-		@Override
-		public JComponent getComponent() {
-			return this;
-		}
-	}
-	
 	public static class ValueTextArea extends JTextArea implements ValueTextComponent {
 		
 		public ValueTextArea() {
@@ -147,6 +140,32 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 				this.setFocusable(false);
 				this.setFocusable(true);
 			}
+		}
+		
+		@Override
+		public JComponent getComponent() {
+			return this;
+		}
+	}
+	
+	public static class ValueTextField extends JTextField implements ValueTextComponent {
+		
+		public ValueTextField() {
+			super();
+			this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		}
+		
+		@Override
+		public JComponent getComponent() {
+			return this;
+		}
+	}
+	
+	public static class PasswordTextComponent extends JPasswordField implements ValueTextComponent {
+		
+		public PasswordTextComponent() {
+			super();
+			this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		}
 		
 		@Override
