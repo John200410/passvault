@@ -8,12 +8,12 @@ dependencies {
 	//ui stuff
 	implementation "com.jetbrains.intellij.java:java-gui-forms-rt:+"
 	implementation "com.jgoodies:jgoodies-forms:1.9.0"
-	
 	implementation 'com.formdev:flatlaf:3.5.1'
 	implementation 'com.formdev:flatlaf-extras:3.5.1'
 	implementation 'com.formdev:flatlaf-intellij-themes:3.5.1'
 	
-	//gson for json configurations
+	//split button for java swing
+	implementation 'com.github.rhwood:jsplitbutton:2.0.0'
 	
 }
 

@@ -1,10 +1,13 @@
 package org.passvault.client.vault.component;
 
+import com.github.rhwood.jsplitbutton.JSplitButton;
 import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.EntryItemComponentBase;
 import org.passvault.client.vault.component.item.SimpleTextItemComponent;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
+import org.passvault.core.entry.item.TextItemBase;
+import org.passvault.core.entry.item.items.EmailItem;
 import org.passvault.core.entry.item.items.PasswordItem;
 import org.passvault.core.entry.item.items.UsernameItem;
 
@@ -50,7 +53,7 @@ public class EntryPanel extends JPanel {
 	private final HashSet<EntryItemComponentBase<? extends IEntryItem<?>>> pendingComponents = new HashSet<>();
 	
 	
-	private final JButton addButton;
+	private final JSplitButton addButton;
 	public boolean shouldRepaint = false;
 	
 	public EntryPanel(EntryContainer container, Entry entry) {
@@ -61,28 +64,7 @@ public class EntryPanel extends JPanel {
 		this.setBackground(new Color(35, 37, 46));
 		
 		//create add button to add a new item
-		this.addButton = new JButton("Add");
-		this.addButton.addActionListener(e -> {
-			
-			/*
-			final UsernameItem testItem = new UsernameItem("Username Test", "test username");
-			final UsernameComponent testEntry = new UsernameComponent(this, this.entry, testItem);
-			
-			 */
-			
-			final PasswordItem testItem = new PasswordItem("Password Test", "password123");
-			final PasswordComponent testEntry = new PasswordComponent(this, this.entry, testItem);
-			
-			//make new entries more visible
-			testEntry.setBackground(testEntry.getBackground().brighter());
-			
-			this.pendingComponents.add(testEntry);
-			this.itemComponents.add(testEntry);
-			
-			SwingUtilities.invokeLater(() -> {
-				this.rebuildComponents(false);
-			});
-		});
+		this.addButton = new AddItemButton();
 		this.addButton.setVisible(false);
 		
 		this.rebuildComponents(true);
@@ -100,6 +82,13 @@ public class EntryPanel extends JPanel {
 		});
 	}
 	
+	public EntryItemComponentBase<?> createItemComponent(IEntryItem<?> item) {
+		if(item instanceof TextItemBase textItem) {
+			return new SimpleTextItemComponent(this, entry, textItem);
+		}
+		return null;
+	}
+	
 	/**
 	 * Rebuild the item components in the panel
 	 *
@@ -114,11 +103,7 @@ public class EntryPanel extends JPanel {
 			//add initial components
 			//populate the entry items
 			for(IEntryItem<?> item : this.entry.getItems()) {
-				if(item instanceof UsernameItem usernameItem) {
-					this.itemComponents.add(new SimpleTextItemComponent(this, entry, usernameItem));
-				} else if(item instanceof PasswordItem passwordItem) {
-					this.itemComponents.add(new SimpleTextItemComponent(this, entry, passwordItem));
-				}
+				this.itemComponents.add(this.createItemComponent(item));
 			}
 		}
 		
@@ -161,6 +146,8 @@ public class EntryPanel extends JPanel {
 			layout.appendRow(GAP_ROW_SPEC);
 		}
 		
+		//add row for add button
+		layout.appendRow(ROW_SPEC);
 		this.addButton.setVisible(this.container.isEditMode());
 		this.add(this.addButton, c.xy(2, layout.getRowCount()));
 		
@@ -301,6 +288,43 @@ public class EntryPanel extends JPanel {
 			
 			this.nameValueTextField.setEditable(false);
 		}
+	}
+	
+	private class AddItemButton extends JSplitButton {
+		
+		public AddItemButton() {
+			super("Add");
+			
+			final JPopupMenu popup = new JPopupMenu();
+			popup.add(this.createAddAction("Username", new UsernameItem("Username", "")));
+			popup.add(this.createAddAction("Email", new EmailItem("Email", "")));
+			popup.add(this.createAddAction("Password", new PasswordItem("Password", "")));
+			
+			this.setPopupMenu(popup);
+			this.setAlwaysPopup(true);
+		}
+		
+		private AbstractAction createAddAction(String name, IEntryItem<?> item) {
+			return new AbstractAction(name) {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(item));
+				}
+			};
+		}
+		
+		private void addItem(EntryItemComponentBase<? extends IEntryItem<?>> item) {
+			//make new entries more visible
+			item.setBackground(item.getBackground().brighter());
+			
+			EntryPanel.this.pendingComponents.add(item);
+			EntryPanel.this.itemComponents.add(item);
+			
+			SwingUtilities.invokeLater(() -> {
+				EntryPanel.this.rebuildComponents(false);
+			});
+		}
+		
 	}
 	
 	/**
