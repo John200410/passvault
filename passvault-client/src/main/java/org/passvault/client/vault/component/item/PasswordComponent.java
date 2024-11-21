@@ -10,7 +10,7 @@ import org.passvault.core.entry.item.items.PasswordItem;
 public class PasswordComponent extends EntryItemComponentBase<PasswordItem> {
 
 	public PasswordComponent(EntryPanel parent, Entry entry, PasswordItem item) {
-		super(parent, entry, item);
+		super(parent, entry, item, true);
 	}
 
 	@Override

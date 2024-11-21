@@ -261,21 +261,18 @@ public class EntryPanel extends JPanel {
 		public EntryNameComponent(EntryPanel parent, Entry entry) {
 			super(parent, entry);
 			
-			this.updateComponents();
-			if(this.parent.getContainer().isEditMode()) {
-				this.enableEditMode();
-			}
-		}
-		
-		@Override
-		public void addComponents(GridBagConstraints c) {
 			
 			this.nameValueTextField = new EntryItemComponentBase.ValueTextField();
 			this.nameValueTextField.setEditable(false);
 			
 			final JLabel nameLabel = new JLabel("Name", SwingConstants.LEFT);
-			this.add(nameLabel, c);
-			this.add(this.nameValueTextField, c);
+			this.add(nameLabel, this.constraints);
+			this.add(this.nameValueTextField, this.constraints);
+			
+			this.updateComponents();
+			if(this.parent.getContainer().isEditMode()) {
+				this.enableEditMode();
+			}
 		}
 		
 		@Override

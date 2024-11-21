@@ -14,6 +14,7 @@ public abstract class EntryComponent extends JPanel {
 	
 	protected final EntryPanel parent;
 	protected final Entry entry;
+	protected final GridBagConstraints constraints;
 	
 	public EntryComponent(EntryPanel parent, Entry entry) {
 		this.parent = parent;
@@ -23,16 +24,13 @@ public abstract class EntryComponent extends JPanel {
 		this.setBackground(parent.getBackground().brighter());
 		
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(5, 5, 5, 5);
-		c.weightx = 1;
-		c.gridx = 0;
 		
-		this.addComponents(c);
+		this.constraints = new GridBagConstraints();
+		this.constraints.fill = GridBagConstraints.HORIZONTAL;
+		this.constraints.insets = new Insets(5, 5, 5, 5);
+		this.constraints.weightx = 1;
+		this.constraints.gridx = 0;
 	}
-	
-	public abstract void addComponents(GridBagConstraints c);
 	
 	public abstract void updateComponents();
 	

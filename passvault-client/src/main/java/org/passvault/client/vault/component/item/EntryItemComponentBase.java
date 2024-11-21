@@ -7,6 +7,8 @@ import org.passvault.core.entry.item.IEntryItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
 
 /**
  * @author john@chav.is 11/14/2024
@@ -17,17 +19,44 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	protected JLabel itemNameLabel;
 	protected ValueTextField itemNameTextComponent;
 	
+	protected ValuePanel valuePanel;
 	protected ValueTextComponent valueTextComponent;
 	
-	private GridBagConstraints constraints;
-	
-	public EntryItemComponentBase(EntryPanel parent, Entry entry, T item) {
+	protected JButton copyButton;
+
+	public EntryItemComponentBase(EntryPanel parent, Entry entry, T item, boolean copyable) {
 		super(parent, entry);
 		this.item = item;
 		
+		this.itemNameLabel = new JLabel();
+		
+		this.add(this.itemNameLabel, this.constraints);
+		
+		//TODO character limit
+		this.itemNameTextComponent = new ValueTextField();
+		this.itemNameTextComponent.setVisible(false);
+		this.itemNameTextComponent.setEditable(false);
+		
+		this.add(this.itemNameTextComponent, this.constraints);
+		
 		this.valueTextComponent = this.createValueTextComponent();
 		this.valueTextComponent.setEditable(false);
-		this.add(getValueComponent(), this.constraints);
+		
+		this.valuePanel = new ValuePanel(this.valueTextComponent);
+		this.add(this.valuePanel, this.constraints);
+		
+		if(copyable) {
+			this.copyButton = new JButton(new AbstractAction("Copy") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+							new StringSelection(item.getDisplayValue()),
+							null
+					);
+				}
+			});
+			this.valuePanel.add(this.copyButton);
+		}
 		
 		this.updateComponents();
 		if(this.parent.getContainer().isEditMode()) {
@@ -56,21 +85,6 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	};
 	
 	@Override
-	public void addComponents(GridBagConstraints c) {
-		this.constraints = c;
-		this.itemNameLabel = new JLabel();
-		
-		this.add(this.itemNameLabel, c);
-		
-		//TODO character limit
-		this.itemNameTextComponent = new ValueTextField();
-		this.itemNameTextComponent.setVisible(false);
-		this.itemNameTextComponent.setEditable(false);
-		
-		this.add(this.itemNameTextComponent, c);
-	}
-	
-	@Override
 	public void enableEditMode() {
 		this.itemNameLabel.setVisible(false);
 		
@@ -78,6 +92,10 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextComponent.setEditable(true);
 		
 		this.valueTextComponent.setEditable(true);
+		
+		if(this.copyButton != null) {
+			this.copyButton.setVisible(false);
+		}
 	}
 	
 	@Override
@@ -92,6 +110,10 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextComponent.setEditable(false);
 		
 		this.valueTextComponent.setEditable(false);
+		
+		if(this.copyButton != null) {
+			this.copyButton.setVisible(true);
+		}
 	}
 	
 	public T getItem() {
@@ -110,6 +132,18 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	}
 	
 	protected abstract void attemptApply() throws Exception;
+	
+	public class ValuePanel extends JPanel {
+		
+		public ValuePanel(ValueTextComponent valueTextComponent) {
+			super();
+			this.setBackground(EntryItemComponentBase.this.getBackground());
+			this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+			
+			this.add(valueTextComponent.getComponent());
+		}
+		
+	}
 	
 	public static interface ValueTextComponent {
 		
