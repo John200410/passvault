@@ -2,8 +2,7 @@ package org.passvault.client.vault.component;
 
 import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.EntryItemComponentBase;
-import org.passvault.client.vault.component.item.PasswordComponent;
-import org.passvault.client.vault.component.item.UsernameComponent;
+import org.passvault.client.vault.component.item.SimpleTextItemComponent;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.entry.item.items.PasswordItem;
@@ -116,9 +115,9 @@ public class EntryPanel extends JPanel {
 			//populate the entry items
 			for(IEntryItem<?> item : this.entry.getItems()) {
 				if(item instanceof UsernameItem usernameItem) {
-					this.itemComponents.add(new UsernameComponent(this, entry, usernameItem));
+					this.itemComponents.add(new SimpleTextItemComponent(this, entry, usernameItem));
 				} else if(item instanceof PasswordItem passwordItem) {
-					this.itemComponents.add(new PasswordComponent(this, entry, passwordItem));
+					this.itemComponents.add(new SimpleTextItemComponent(this, entry, passwordItem));
 				}
 			}
 		}
