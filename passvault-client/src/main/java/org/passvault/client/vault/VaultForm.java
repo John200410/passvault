@@ -117,6 +117,9 @@ public class VaultForm extends JFrame {
 				this.updateEntryList();
 				
 				this.viewEntry(entry);
+				
+				//enable editing mode when creating new entry
+				this.entryContainer.enableEditingMode();
 			} catch(Exception ex) {
 				//TODO: exception handle
 				Globals.LOGGER.warning("Error creating new entry: " + ex.getMessage());
