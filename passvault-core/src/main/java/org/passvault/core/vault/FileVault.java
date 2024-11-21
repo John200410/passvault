@@ -125,7 +125,7 @@ public class FileVault implements IVault {
 		return this.entries == null;
 	}
 	
-	private boolean save() throws VaultException {
+	public boolean save() throws VaultException {
 		try {
 			
 			//TODO: save to temp file instead of overwriting, just incase an error occurs

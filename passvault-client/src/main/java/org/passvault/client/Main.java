@@ -65,9 +65,20 @@ public class Main {
 		);
 		
 		
+		final File testVaultFile = new File("test.zip");
 		
-		final FileVault vault = new FileVault(new File("test.zip"));
+		final FileVault vault = new FileVault(testVaultFile);
 		
+		if(!testVaultFile.exists()) {
+			try {
+				vault.save();
+			} catch(Exception e) {
+				Globals.LOGGER.severe("Error saving vault: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+		//dummy
 		try {
 			vault.unlock("password".toCharArray());
 			
