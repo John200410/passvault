@@ -20,6 +20,8 @@ import java.util.HashMap;
  * <p>
  * Favorites will be at the top, followed by the rest of the entries in alphabetical order.
  *
+ * TODO: add asterisk (*) to items that are in edit mode
+ *
  * @author john@chav.is 11/17/2024
  */
 public class EntriesList extends JList<Entry> {

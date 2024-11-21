@@ -4,11 +4,13 @@ import com.github.rhwood.jsplitbutton.JSplitButton;
 import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.EntryItemComponentBase;
 import org.passvault.client.vault.component.item.SimpleTextItemComponent;
+import org.passvault.client.vault.component.item.UrlComponent;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.entry.item.TextItemBase;
 import org.passvault.core.entry.item.items.EmailItem;
 import org.passvault.core.entry.item.items.PasswordItem;
+import org.passvault.core.entry.item.items.UrlItem;
 import org.passvault.core.entry.item.items.UsernameItem;
 
 import javax.swing.*;
@@ -80,13 +82,6 @@ public class EntryPanel extends JPanel {
 				shouldRepaint = true;
 			}
 		});
-	}
-	
-	public EntryItemComponentBase<?> createItemComponent(IEntryItem<?> item) {
-		if(item instanceof TextItemBase textItem) {
-			return new SimpleTextItemComponent(this, entry, textItem);
-		}
-		return null;
 	}
 	
 	/**
@@ -215,6 +210,15 @@ public class EntryPanel extends JPanel {
 		}
 	}
 	
+	public EntryItemComponentBase<?> createItemComponent(IEntryItem<?> item) {
+		if(item instanceof TextItemBase textItem) {
+			return new SimpleTextItemComponent(this, entry, textItem);
+		} else if(item instanceof UrlItem urlItem) {
+			return new UrlComponent(this, entry, urlItem);
+		}
+		return null;
+	}
+	
 	@Override
 	public void repaint() {
 		this.revalidate();
@@ -299,6 +303,7 @@ public class EntryPanel extends JPanel {
 			popup.add(this.createAddAction("Username", new UsernameItem("Username", "")));
 			popup.add(this.createAddAction("Email", new EmailItem("Email", "")));
 			popup.add(this.createAddAction("Password", new PasswordItem("Password", "")));
+			popup.add(this.createAddAction("URLs", new UrlItem("URLs", new String[1])));
 			
 			this.setPopupMenu(popup);
 			this.setAlwaysPopup(true);

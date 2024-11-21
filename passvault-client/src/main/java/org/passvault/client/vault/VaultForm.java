@@ -21,6 +21,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * TODO: document
+ *
  * @author john@chav.is 11/3/2024
  */
 public class VaultForm extends JFrame {

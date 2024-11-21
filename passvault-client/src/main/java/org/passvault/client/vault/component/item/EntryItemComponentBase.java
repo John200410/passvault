@@ -40,7 +40,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.add(this.itemNameTextComponent, this.constraints);
 		
 		this.valueTextComponent = this.createValueTextComponent();
-		this.valueTextComponent.setEditable(false);
+		if(this.valueTextComponent != null) {
+			this.valueTextComponent.setEditable(false);
+		}
 		
 		this.valuePanel = new ValuePanel(this.valueTextComponent);
 		this.add(this.valuePanel, this.constraints);
@@ -74,7 +76,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 			this.itemNameTextComponent.setText(this.item.getName());
 		}
 		
-		if(!this.valueTextComponent.isEditable()) {
+		if(this.valueTextComponent != null && !this.valueTextComponent.isEditable()) {
 			this.valueTextComponent.setText(this.item.getDisplayValue());
 		}
 		
@@ -91,7 +93,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextComponent.setVisible(true);
 		this.itemNameTextComponent.setEditable(true);
 		
-		this.valueTextComponent.setEditable(true);
+		if(this.valueTextComponent != null) {
+			this.valueTextComponent.setEditable(true);
+		}
 		
 		if(this.copyButton != null) {
 			this.copyButton.setVisible(false);
@@ -109,7 +113,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextComponent.setVisible(false);
 		this.itemNameTextComponent.setEditable(false);
 		
-		this.valueTextComponent.setEditable(false);
+		if(this.valueTextComponent != null) {
+			this.valueTextComponent.setEditable(false);
+		}
 		
 		if(this.copyButton != null) {
 			this.copyButton.setVisible(true);
@@ -127,10 +133,6 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		return new ValueTextField();
 	}
 	
-	protected JComponent getValueComponent() {
-		return this.valueTextComponent.getComponent();
-	}
-	
 	protected abstract void attemptApply() throws Exception;
 	
 	public class ValuePanel extends JPanel {
@@ -140,7 +142,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 			this.setBackground(EntryItemComponentBase.this.getBackground());
 			this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			
-			this.add(valueTextComponent.getComponent());
+			if(valueTextComponent != null) {
+				this.add(valueTextComponent.getComponent());
+			}
 		}
 		
 	}
