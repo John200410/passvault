@@ -122,7 +122,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 	
 	protected ValueTextComponent createValueTextComponent() {
 		if(this.item.getType().isSecret()) {
-			return new PasswordTextComponent();
+			return new ValueSecretTextField();
 		}
 		return new ValueTextField();
 	}
@@ -195,9 +195,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		}
 	}
 	
-	public static class PasswordTextComponent extends JPasswordField implements ValueTextComponent {
+	public static class ValueSecretTextField extends JPasswordField implements ValueTextComponent {
 		
-		public PasswordTextComponent() {
+		public ValueSecretTextField() {
 			super();
 			this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		}
