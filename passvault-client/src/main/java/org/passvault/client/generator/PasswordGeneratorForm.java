@@ -63,8 +63,7 @@ public class PasswordGeneratorForm extends JFrame {
 	public static PasswordGeneratorForm open(GeneratorParameters.Builder params) {
 		final PasswordGeneratorForm frame = new PasswordGeneratorForm(params);
 		
-		//TODO: center of screen
-		
+		frame.setLocationRelativeTo(null); //center of screen
 		frame.setVisible(true);
 		return frame;
 	}
@@ -75,7 +74,7 @@ public class PasswordGeneratorForm extends JFrame {
 		
 		$$$setupUI$$$();
 		this.setContentPane(this.rootPanel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.pack();
 		this.setResizable(false);
 		

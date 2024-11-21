@@ -31,8 +31,7 @@ public class LoginForm extends JFrame {
 	public static LoginForm open() {
 		final LoginForm frame = new LoginForm();
 		
-		//TODO: center of screen
-		
+		frame.setLocationRelativeTo(null); //center of screen
 		frame.setVisible(true);
 		return frame;
 	}

@@ -3,6 +3,8 @@ package org.passvault.client.vault;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.passvault.client.Main;
+import org.passvault.client.generator.GeneratorParameters;
+import org.passvault.client.generator.PasswordGeneratorForm;
 import org.passvault.client.vault.component.EntryContainer;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
@@ -58,8 +60,7 @@ public class VaultForm extends JFrame {
 	public static VaultForm open(IVault vault) {
 		final VaultForm frame = new VaultForm(vault);
 		
-		//TODO: center of screen
-		
+		frame.setLocationRelativeTo(null); //center of screen
 		frame.setVisible(true);
 		return frame;
 	}
@@ -127,6 +128,10 @@ public class VaultForm extends JFrame {
 				Globals.LOGGER.warning("Error creating new entry: " + ex.getMessage());
 				ex.printStackTrace();
 			}
+		});
+		
+		this.passwordGeneratorButton.addActionListener((l) -> {
+			PasswordGeneratorForm.open(new GeneratorParameters.Builder());
 		});
 		
 		//setup background image
