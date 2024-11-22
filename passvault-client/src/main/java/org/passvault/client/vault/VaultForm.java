@@ -119,7 +119,7 @@ public class VaultForm extends JFrame {
 				
 				this.updateEntryList();
 				
-				this.viewEntry(entry);
+				this.entriesList.setSelectedValue(entry, true);
 				
 				//enable editing mode when creating new entry
 				this.entryContainer.enableEditingMode();
