@@ -23,11 +23,7 @@ public class UrlComponent extends EntryItemComponentBase<UrlItem> {
 	private final JButton addButton;
 	
 	public UrlComponent(EntryPanel parent, Entry entry, UrlItem item) {
-		super(parent, entry, item, false);
-		
-		//modify default value panel
-		this.valuePanel.setLayout(new BoxLayout(this.valuePanel, BoxLayout.Y_AXIS));
-		this.valuePanel.removeAll();
+		super(parent, entry, item);
 		
 		for(String urls : item.getValue()) {
 			UrlPanel urlPanel = new UrlPanel();
@@ -104,8 +100,10 @@ public class UrlComponent extends EntryItemComponentBase<UrlItem> {
 	}
 	
 	@Override
-	protected ValueTextComponent createValueTextComponent() {
-		return null;
+	protected JPanel createValuePanel() {
+		final JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		return panel;
 	}
 	
 	private class UrlPanel extends JPanel {

@@ -3,10 +3,7 @@ package org.passvault.core;
 import com.google.gson.*;
 import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.entry.item.ItemType;
-import org.passvault.core.entry.item.items.EmailItem;
-import org.passvault.core.entry.item.items.PasswordItem;
-import org.passvault.core.entry.item.items.UrlItem;
-import org.passvault.core.entry.item.items.UsernameItem;
+import org.passvault.core.entry.item.items.*;
 
 import java.util.logging.Logger;
 
@@ -60,6 +57,8 @@ public class Globals {
 								return new EmailItem(name, obj.get("value").getAsString());
 							case PASSWORD:
 								return new PasswordItem(name, obj.get("value").getAsString());
+							case TOTP:
+								return new TOTPItem(name, obj.get("value").getAsString());
 							case URL:
 								
 								final JsonArray array = obj.get("value").getAsJsonArray();

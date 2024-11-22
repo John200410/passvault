@@ -186,7 +186,8 @@ public class VaultForm extends JFrame {
 					SwingUtilities.invokeLater(() -> {
 						try {
 							entryContainer.update();
-						} catch(Throwable ignored) {}
+						} catch(Throwable ignored) {
+						}
 					});
 				}
 			}

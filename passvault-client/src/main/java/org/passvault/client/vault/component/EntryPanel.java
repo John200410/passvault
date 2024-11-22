@@ -4,14 +4,12 @@ import com.github.rhwood.jsplitbutton.JSplitButton;
 import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.EntryItemComponentBase;
 import org.passvault.client.vault.component.item.SimpleTextItemComponent;
+import org.passvault.client.vault.component.item.TOTPComponent;
 import org.passvault.client.vault.component.item.UrlComponent;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.entry.item.TextItemBase;
-import org.passvault.core.entry.item.items.EmailItem;
-import org.passvault.core.entry.item.items.PasswordItem;
-import org.passvault.core.entry.item.items.UrlItem;
-import org.passvault.core.entry.item.items.UsernameItem;
+import org.passvault.core.entry.item.items.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -211,12 +209,26 @@ public class EntryPanel extends JPanel {
 	}
 	
 	public EntryItemComponentBase<?> createItemComponent(IEntryItem<?> item) {
-		if(item instanceof TextItemBase textItem) {
-			return new SimpleTextItemComponent(this, entry, textItem);
+		
+		EntryItemComponentBase<?> component = null;
+		
+		if(item instanceof TOTPItem totpItem) {
+			component = new TOTPComponent(this, entry, totpItem);
 		} else if(item instanceof UrlItem urlItem) {
-			return new UrlComponent(this, entry, urlItem);
+			component = new UrlComponent(this, entry, urlItem);
+		} else if(item instanceof TextItemBase textItem) {
+			component = new SimpleTextItemComponent(this, entry, textItem, true);
 		}
-		return null;
+		
+		if(component != null) {
+			component.updateComponents();
+			
+			if(this.container.isEditMode()) {
+				component.enableEditMode();
+			}
+		}
+		
+		return component;
 	}
 	
 	@Override
@@ -252,7 +264,7 @@ public class EntryPanel extends JPanel {
 			super(parent, entry);
 			
 			
-			this.nameValueTextField = new EntryItemComponentBase.ValueTextField();
+			this.nameValueTextField = new SimpleTextItemComponent.ValueTextField();
 			this.nameValueTextField.setEditable(false);
 			
 			final JLabel nameLabel = new JLabel("Name", SwingConstants.LEFT);
@@ -317,6 +329,12 @@ public class EntryPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new PasswordItem("Password", "")));
+				}
+			});
+			popup.add(new AbstractAction("2FA Authenticator") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new TOTPItem("2FA Authenticator", "")));
 				}
 			});
 			popup.add(new AbstractAction("URLs") {
