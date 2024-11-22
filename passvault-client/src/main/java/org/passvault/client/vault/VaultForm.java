@@ -183,7 +183,11 @@ public class VaultForm extends JFrame {
 			@Override
 			public void run() {
 				if(entryContainer != null) {
-					SwingUtilities.invokeLater(() -> entryContainer.update());
+					SwingUtilities.invokeLater(() -> {
+						try {
+							entryContainer.update();
+						} catch(Throwable ignored) {}
+					});
 				}
 			}
 		}, 100, 100);

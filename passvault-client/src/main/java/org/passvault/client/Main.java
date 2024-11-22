@@ -10,6 +10,7 @@ import org.passvault.core.entry.item.items.UsernameItem;
 import org.passvault.core.vault.FileVault;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -34,6 +35,7 @@ public class Main {
 		
 		//setup flatlaf theme
 		FlatAtomOneDarkIJTheme.setup();
+		UIManager.put( "Component.focusWidth", 0);
 		
 		/*
 		final GeneratorParameters params = new GeneratorParameters.Builder().build();

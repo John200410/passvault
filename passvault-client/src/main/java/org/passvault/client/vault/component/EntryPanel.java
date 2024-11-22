@@ -300,22 +300,34 @@ public class EntryPanel extends JPanel {
 			super("Add");
 			
 			final JPopupMenu popup = new JPopupMenu();
-			popup.add(this.createAddAction("Username", new UsernameItem("Username", "")));
-			popup.add(this.createAddAction("Email", new EmailItem("Email", "")));
-			popup.add(this.createAddAction("Password", new PasswordItem("Password", "")));
-			popup.add(this.createAddAction("URLs", new UrlItem("URLs", new String[1])));
+			popup.add(new AbstractAction("Username") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new UsernameItem("Username", "")));
+					
+				}
+			});
+			popup.add(new AbstractAction("Email") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new EmailItem("Email", "")));
+				}
+			});
+			popup.add(new AbstractAction("Password") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new PasswordItem("Password", "")));
+				}
+			});
+			popup.add(new AbstractAction("URLs") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new UrlItem("URLs", new String[1])));
+				}
+			});
 			
 			this.setPopupMenu(popup);
 			this.setAlwaysPopup(true);
-		}
-		
-		private AbstractAction createAddAction(String name, IEntryItem<?> item) {
-			return new AbstractAction(name) {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(item));
-				}
-			};
 		}
 		
 		private void addItem(EntryItemComponentBase<? extends IEntryItem<?>> item) {

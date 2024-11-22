@@ -119,7 +119,14 @@ public class UrlComponent extends EntryItemComponentBase<UrlItem> {
 			this.setBackground(UrlComponent.this.getBackground());
 			this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			
-			this.urlField = new JTextField();
+			this.urlField = new JTextField() {
+				@Override
+				public void setEditable(boolean b) {
+					//Globals.LOGGER.info("Setting editable: " + b);
+					super.setEditable(b);
+				}
+			};
+			this.urlField.setEditable(false);
 			this.add(this.urlField);
 			
 			this.openButton = new JButton(new AbstractAction("Open") {

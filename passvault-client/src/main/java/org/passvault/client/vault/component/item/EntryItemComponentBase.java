@@ -62,7 +62,7 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		
 		this.updateComponents();
 		if(this.parent.getContainer().isEditMode()) {
-			this.enableEditMode();
+			SwingUtilities.invokeLater(this::enableEditMode);
 		}
 	}
 	
