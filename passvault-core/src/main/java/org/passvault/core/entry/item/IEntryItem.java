@@ -54,11 +54,6 @@ public interface IEntryItem<T> {
 	default void update() {};
 	
 	/**
-	 * @return true if the item has been modified since it was last saved
-	 */
-	boolean isDirty(boolean clean);
-	
-	/**
 	 * Serializes the item to a JsonObject
 	 *
 	 * @return the serialized item

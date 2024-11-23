@@ -8,7 +8,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * The main class for initializing the PassVault client.
@@ -54,7 +57,6 @@ public class PassVaultClient {
 	public static void main(String[] args) {
 		Globals.LOGGER.info("Starting PassVault");
 		
-		//TODO: create Settings object for settings and save them to settings.json file in APP_DIR
 		if(!APP_DIR.exists()) {
 			APP_DIR.mkdirs();
 		}

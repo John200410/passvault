@@ -8,6 +8,7 @@ import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
 import org.passvault.core.entry.item.items.PasswordItem;
 import org.passvault.core.entry.item.items.UsernameItem;
+import org.passvault.core.exception.VaultException;
 import org.passvault.core.vault.FileVault;
 import org.passvault.core.vault.IVault;
 
@@ -44,6 +45,11 @@ public class VaultForm extends JFrame {
 	 */
 	private final Timer updateTimer = new Timer();
 	
+	/**
+	 * Timer to automatically save the vault every minute
+	 */
+	private final Timer autoSaveTimer = new Timer();
+	
 	private JPanel rootPanel;
 	
 	private EntriesList entriesList;
@@ -52,10 +58,9 @@ public class VaultForm extends JFrame {
 	private JLabel backgroundLabel;
 	private JSplitPane splitPane;
 	private JButton newEntryButton;
-	private JButton openButton;
 	private JButton passwordGeneratorButton;
 	private JButton saveButton;
-	private JButton saveAsButton;
+	private JButton aboutButton;
 	
 	public static VaultForm open(IVault vault) {
 		final VaultForm frame = new VaultForm(vault);
@@ -115,8 +120,6 @@ public class VaultForm extends JFrame {
 			}
 		});
 		
-		
-		
 		//setup new entry button
 		this.newEntryButton.addActionListener(e -> {
 			
@@ -154,6 +157,16 @@ public class VaultForm extends JFrame {
 			}
 		});
 		
+		this.saveButton.addActionListener(e -> {
+			try {
+				this.vault.save();
+				((FileVault) this.vault).setDirty(false);
+			} catch(VaultException ex) {
+				Globals.LOGGER.severe("Error saving vault: " + ex.getMessage());
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Error saving vault: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 		this.passwordGeneratorButton.addActionListener((l) -> {
 			PasswordGeneratorForm.open(this, PassVaultClient.SETTINGS.preferredGeneratorParams, null);
 		});
@@ -201,7 +214,6 @@ public class VaultForm extends JFrame {
 			Globals.LOGGER.warning("Failed to load background image: " + e.getMessage());
 		}
 		
-		
 		//setup entry panel update timer
 		this.updateTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -214,8 +226,31 @@ public class VaultForm extends JFrame {
 						}
 					});
 				}
+				
+				if(((FileVault) vault).isDirty() && !saveButton.isEnabled()) {
+					SwingUtilities.invokeLater(() -> {
+						saveButton.setEnabled(true);
+					});
+				} else if(!((FileVault) vault).isDirty() && saveButton.isEnabled()) {
+					SwingUtilities.invokeLater(() -> {
+						saveButton.setEnabled(false);
+					});
+				}
 			}
 		}, 100, 100);
+		
+		this.autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					vault.save();
+				} catch(VaultException ex) {
+					Globals.LOGGER.severe("Error auto-saving vault: " + ex.getMessage());
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(VaultForm.this, "Error saving vault: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}, 60000, 60000);
 	}
 	
 	public void viewEntry(Entry entry) {

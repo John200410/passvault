@@ -51,11 +51,6 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		if(!this.itemNameTextComponent.isEditable()) {
 			this.itemNameTextComponent.setText(this.item.getName());
 		}
-		
-		//TODO: do i need this
-		if (this.item.isDirty(true)) {
-		
-		}
 	};
 	
 	@Override

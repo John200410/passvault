@@ -22,11 +22,6 @@ public abstract class ItemBase<T> implements IEntryItem<T> {
 	 */
 	protected T value;
 	
-	/**
-	 * Flag variable that indicates if this item has been modified since it was last updated on the UI
-	 */
-	protected boolean dirty = true;
-	
 	public ItemBase(ItemType type, T value) {
 		this.type = type;
 		this.name = type.getDefaultName();
@@ -50,7 +45,6 @@ public abstract class ItemBase<T> implements IEntryItem<T> {
 		}
 		
 		this.name = name;
-		this.dirty = true;
 	}
 	
 	@Override
@@ -69,15 +63,6 @@ public abstract class ItemBase<T> implements IEntryItem<T> {
 			throw new ItemException("Value cannot be null");
 		}
 		this.value = value;
-		this.dirty = true;
 	}
 	
-	@Override
-	public boolean isDirty(boolean clean) {
-		final boolean dirty = this.dirty;
-		if (clean) {
-			this.dirty = false;
-		}
-		return dirty;
-	}
 }

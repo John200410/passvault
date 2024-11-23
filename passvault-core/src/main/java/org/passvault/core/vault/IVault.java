@@ -35,6 +35,13 @@ public interface IVault {
 	void deleteEntry(Entry entry) throws VaultException;
 	
 	/**
+	 * Saves the vault.
+	 *
+	 * @throws VaultException
+	 */
+	void save() throws VaultException;
+	
+	/**
 	 * Retrieves a map containing all the entries in the vault.
 	 *
 	 * @return map of all entries

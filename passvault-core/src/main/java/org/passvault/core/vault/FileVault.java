@@ -34,9 +34,11 @@ import java.util.zip.ZipOutputStream;
  */
 public class FileVault implements IVault {
 	
+	/**
+	 * Constants
+	 */
 	public static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	public static final SecretKeyFactory SECRET_KEY_FACTORY;
-	
 	private static final int PBKDF2_ITERATION_COUNT = 300_000; //the number of times that the password is hashed during the derivation of the symmetric key
 	private static final int PBKDF2_SALT_LENGTH = 16;
 	private static final int AES_KEY_LENGTH_BITS = 256;
@@ -65,9 +67,9 @@ public class FileVault implements IVault {
 	private char[] password = null;
 	
 	/**
-	 * The encryption cipher
+	 * Flag variable for whether the vault has been modified since the last save
 	 */
-	private Cipher encryptionCipher = null;
+	private boolean dirty = false;
 	
 	/**
 	 * Random salt and nonce generated for encrypting this vault
@@ -167,8 +169,10 @@ public class FileVault implements IVault {
 			throw new VaultLockedException();
 		}
 		
-		this.entries.add(entry);
-		this.save();
+		synchronized(this.file) {
+			this.entries.add(entry);
+			this.dirty = true;
+		}
 	}
 	
 	@Override
@@ -178,8 +182,10 @@ public class FileVault implements IVault {
 			throw new VaultLockedException();
 		}
 		
-		this.entries.remove(entry);
-		this.save();
+		synchronized(this.file) {
+			this.entries.remove(entry);
+			this.dirty = true;
+		}
 	}
 	
 	@Override
@@ -192,6 +198,7 @@ public class FileVault implements IVault {
 		return this.password == null;
 	}
 	
+	@Override
 	public void save() throws VaultException {
 		
 		if(this.isLocked()) {
@@ -199,6 +206,7 @@ public class FileVault implements IVault {
 		}
 		
 		//setup encryption
+		Cipher encryptionCipher = null;
 		try {
 			//generate salt and nonce for encryption
 			SECURE_RANDOM.nextBytes(this.salt);
@@ -206,16 +214,14 @@ public class FileVault implements IVault {
 			
 			//generate secret key for encryption
 			final byte[] encryptionSecret = SECRET_KEY_FACTORY.generateSecret(
-					new PBEKeySpec(password, this.salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH_BITS)
+					new PBEKeySpec(this.password, this.salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH_BITS)
 			).getEncoded();
 			final SecretKey encryptionKey = new SecretKeySpec(encryptionSecret, "AES");
 			
 			//setup cipher
-			this.encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-			this.encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, this.nonce));
+			encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
+			encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, this.nonce));
 		} catch(Throwable e) {
-			Globals.LOGGER.severe("Error initializing encryption");
-			e.printStackTrace();
 			throw new VaultException("Error initializing encryption", e);
 		}
 		
@@ -223,38 +229,45 @@ public class FileVault implements IVault {
 			
 			//TODO: save to temp file instead of overwriting, just incase an error occurs
 			
-			try(final FileOutputStream fos = new FileOutputStream(this.file)) {
-				
-				//write salt and nonce so the vault can be decrypted
-				fos.write(this.salt);
-				fos.write(this.nonce);
-				
-				
-				
-				//encrypt output
-				try(final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-					try(final ZipOutputStream zos = new ZipOutputStream(baos)) {
-						
-						//write entries
-						for(Entry entry : this.entries) {
-							entry.saveTo(zos);
+			synchronized(this.file) {
+				try(final FileOutputStream fos = new FileOutputStream(this.file)) {
+					
+					//write salt and nonce so the vault can be decrypted
+					fos.write(this.salt);
+					fos.write(this.nonce);
+					
+					
+					//encrypt output
+					try(final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+						try(final ZipOutputStream zos = new ZipOutputStream(baos)) {
+							
+							//write entries
+							for(Entry entry : this.entries) {
+								entry.saveTo(zos);
+							}
+							
 						}
 						
+						final byte[] encrypted = encryptionCipher.doFinal(baos.toByteArray());
+						fos.write(encrypted);
 					}
-					
-					final byte[] encrypted = this.encryptionCipher.doFinal(baos.toByteArray());
-					fos.write(encrypted);
 				}
 			}
 		} catch(Throwable e) {
-			Globals.LOGGER.severe("Error saving vault");
-			e.printStackTrace();
 			throw new VaultException("Error saving vault", e);
 		}
 	}
 	
 	public File getFile() {
 		return this.file;
+	}
+	
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+	
+	public boolean isDirty() {
+		return this.dirty;
 	}
 	
 	public static FileVault createNewVault(File file, char[] password) throws Exception {

@@ -107,32 +107,29 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="1ec0a" class="javax.swing.JButton" binding="openButton">
-            <constraints/>
-            <properties>
-              <text value="Open"/>
-            </properties>
-          </component>
           <component id="9fe88" class="javax.swing.JButton" binding="saveButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Save"/>
             </properties>
           </component>
-          <component id="13827" class="javax.swing.JButton" binding="saveAsButton" default-binding="true">
+          <hspacer id="679e3">
             <constraints/>
-            <properties>
-              <text value="Save As"/>
-            </properties>
-          </component>
-          <component id="db910" class="javax.swing.JToolBar$Separator">
-            <constraints/>
-            <properties/>
-          </component>
+          </hspacer>
           <component id="4362a" class="javax.swing.JButton" binding="passwordGeneratorButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Password Generator"/>
+            </properties>
+          </component>
+          <component id="20126" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="e1521" class="javax.swing.JButton" binding="aboutButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="About"/>
             </properties>
           </component>
         </children>

@@ -81,8 +81,6 @@ public class PasswordGeneratorForm extends JDialog {
 		this.initializeComponents(this.params, component);
 		this.updateValues(this.params);
 		this.regeneratePassword();
-		
-		//TODO: save config here at end of init
 	}
 	
 	@Override
