@@ -99,7 +99,8 @@ public class EntryContainer extends Container {
 		});
 		this.toolBar.add(this.deleteButton);
 		
-		//TODO: this is for debug purposes only
+		//this is for debug purposes only
+		/*
 		this.toolBar.add(new JButton(new AbstractAction("Reset") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -110,6 +111,7 @@ public class EntryContainer extends Container {
 				entryPanel.rebuildComponents(true);
 			}
 		}));
+		 */
 		
 		this.toolBar.add(Box.createHorizontalGlue());
 		
