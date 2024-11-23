@@ -39,25 +39,38 @@ public class EntriesList extends JList<Entry> {
 		
 		//selection model that lets you toggle the selection
 		this.setSelectionModel(new DefaultListSelectionModel() {
+			
+			boolean gestureStarted = false;
+			
 			@Override
 			public void setSelectionInterval(int index0, int index1) {
-				if (index0==index1) {
-					if (isSelectedIndex(index0)) {
-						removeSelectionInterval(index0, index0);
-						return;
+				if(!this.gestureStarted) {
+					if(index0 == index1) {
+						if(this.isSelectedIndex(index0)) {
+							this.removeSelectionInterval(index0, index0);
+							return;
+						}
 					}
+					super.setSelectionInterval(index0, index1);
 				}
-				super.setSelectionInterval(index0, index1);
+				this.gestureStarted = true;
 			}
 			
 			@Override
 			public void addSelectionInterval(int index0, int index1) {
-				if (index0==index1) {
-					if (isSelectedIndex(index0)) {
-						removeSelectionInterval(index0, index0);
+				if(index0 == index1) {
+					if(this.isSelectedIndex(index0)) {
+						this.removeSelectionInterval(index0, index0);
 						return;
 					}
 					super.addSelectionInterval(index0, index1);
+				}
+			}
+			
+			@Override
+			public void setValueIsAdjusting(boolean isAdjusting) {
+				if(!isAdjusting) {
+					this.gestureStarted = false;
 				}
 			}
 		});
