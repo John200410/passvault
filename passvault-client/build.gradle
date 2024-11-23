@@ -25,7 +25,7 @@ dependencies {
 jar {
 	manifest {
 		attributes(
-				'Main-Class': 'org.passvault.client.Main'
+				'Main-Class': 'org.passvault.client.PassVaultClient'
 		)
 	}
 	from {
