@@ -1,5 +1,6 @@
 package org.passvault.client.vault.component;
 
+import com.formdev.flatlaf.icons.FlatAbstractIcon;
 import com.github.rhwood.jsplitbutton.JSplitButton;
 import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.EntryItemComponentBase;
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -29,7 +31,7 @@ public class EntryPanel extends JPanel {
 	/**
 	 * Constants
 	 */
-	private static final ColumnSpec COLUMN_GAP_SPEC = new ColumnSpec(new ConstantSize(15, ConstantSize.DLUX));
+	private static final ColumnSpec COLUMN_GAP_SPEC = new ColumnSpec(ColumnSpec.CENTER, new ConstantSize(15, ConstantSize.DLUX), FormSpec.NO_GROW);
 	private static final ColumnSpec COLUMN_SPEC = new ColumnSpec(ColumnSpec.FILL, Sizes.DLUX1, FormSpec.DEFAULT_GROW);
 	private static final RowSpec GAP_ROW_SPEC = new RowSpec(new ConstantSize(10, ConstantSize.DLUY));
 	private static final RowSpec ROW_SPEC = new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.NO_GROW);
@@ -104,8 +106,8 @@ public class EntryPanel extends JPanel {
 		this.removeAll();
 		
 		final FormLayout layout = new FormLayout(
-				new ColumnSpec[] {COLUMN_GAP_SPEC, COLUMN_SPEC, COLUMN_GAP_SPEC},
-				new RowSpec[] {GAP_ROW_SPEC, ROW_SPEC, GAP_ROW_SPEC}
+				new ColumnSpec[]{COLUMN_GAP_SPEC, COLUMN_SPEC, COLUMN_GAP_SPEC},
+				new RowSpec[]{GAP_ROW_SPEC, ROW_SPEC, GAP_ROW_SPEC}
 		);
 		this.setLayout(layout);
 		
@@ -382,7 +384,7 @@ public class EntryPanel extends JPanel {
 			upButton.addActionListener(e -> {
 				final int itemIndex = EntryPanel.this.itemComponents.indexOf(this.itemComponent);
 				
-				if (itemIndex > 0) {
+				if(itemIndex > 0) {
 					EntryPanel.this.itemComponents.remove(itemIndex);
 					EntryPanel.this.itemComponents.add(itemIndex - 1, this.itemComponent);
 					
@@ -399,7 +401,7 @@ public class EntryPanel extends JPanel {
 				
 				final int itemIndex = EntryPanel.this.itemComponents.indexOf(this.itemComponent);
 				
-				if (itemIndex < EntryPanel.this.itemComponents.size() - 1) {
+				if(itemIndex < EntryPanel.this.itemComponents.size() - 1) {
 					EntryPanel.this.itemComponents.remove(itemIndex);
 					EntryPanel.this.itemComponents.add(itemIndex + 1, this.itemComponent);
 					
@@ -415,7 +417,22 @@ public class EntryPanel extends JPanel {
 	private class DeleteButton extends JButton {
 		
 		public DeleteButton(EntryItemComponentBase<? extends IEntryItem<?>> item) {
-			super(new AbstractAction("X") {
+			super(new AbstractAction("", new FlatAbstractIcon(16, 16, null) {
+				@Override
+				protected void paintIcon(Component c, Graphics2D g) {
+					float mx = width / 2f;
+					float my = height / 2f;
+					float r = 3.25f;
+					
+					Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD, 4);
+					path.moveTo(mx - r, my - r);
+					path.lineTo(mx + r, my + r);
+					path.moveTo(mx - r, my + r);
+					path.lineTo(mx + r, my - r);
+					g.setStroke(new BasicStroke(1f));
+					g.draw(path);
+				}
+			}) {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					EntryPanel.this.itemComponents.remove(item);
@@ -426,6 +443,7 @@ public class EntryPanel extends JPanel {
 					});
 				}
 			});
+			
 		}
 	}
 	
