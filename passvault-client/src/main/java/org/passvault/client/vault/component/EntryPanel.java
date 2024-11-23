@@ -45,6 +45,11 @@ public class EntryPanel extends JPanel {
 	private final Entry entry;
 	
 	/**
+	 * The entry metadata component
+	 */
+	private final EntryNameComponent metadataComponent;
+	
+	/**
 	 * The components that are currently displayed
 	 */
 	private final ArrayList<EntryItemComponentBase<? extends IEntryItem<?>>> itemComponents = new ArrayList<>();
@@ -64,6 +69,8 @@ public class EntryPanel extends JPanel {
 		
 		//darker background
 		this.setBackground(new Color(35, 37, 46));
+		
+		this.metadataComponent = new EntryNameComponent(this, this.entry);
 		
 		//create add button to add a new item
 		this.addButton = new AddItemButton();
@@ -114,8 +121,7 @@ public class EntryPanel extends JPanel {
 		final CellConstraints c = new CellConstraints();
 		
 		//metadata panel
-		final EntryNameComponent metadataComponent = new EntryNameComponent(this, entry);
-		this.add(metadataComponent, c.xy(2, 2));
+		this.add(this.metadataComponent, c.xy(2, 2));
 		
 		//populate the entry items
 		for(EntryItemComponentBase<? extends IEntryItem<?>> item : this.itemComponents) {
@@ -273,10 +279,11 @@ public class EntryPanel extends JPanel {
 			this.add(nameLabel, this.constraints);
 			this.add(this.nameValueTextField, this.constraints);
 			
-			this.updateComponents();
 			if(this.parent.getContainer().isEditMode()) {
 				this.enableEditMode();
 			}
+			
+			this.updateComponents();
 		}
 		
 		@Override
