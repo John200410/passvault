@@ -138,6 +138,7 @@ public class EntryContainer extends Container {
 		this.saveButton.setVisible(true);
 		
 		this.entryPanel.enableEditingMode();
+		this.vaultForm.updateEntryList();
 	}
 	
 	public void disableEditingMode(boolean save) {
@@ -168,6 +169,7 @@ public class EntryContainer extends Container {
 		this.saveButton.setVisible(false);
 		
 		this.entryPanel.rebuildComponents(true);
+		this.vaultForm.updateEntryList();
 	}
 	
 	public void update() {

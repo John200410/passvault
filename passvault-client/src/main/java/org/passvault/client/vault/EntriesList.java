@@ -20,8 +20,6 @@ import java.util.HashMap;
  * <p>
  * Favorites will be at the top, followed by the rest of the entries in alphabetical order.
  *
- * TODO: add asterisk (*) to items that are in edit mode
- *
  * @author john@chav.is 11/17/2024
  */
 public class EntriesList extends JList<Entry> {
@@ -121,7 +119,6 @@ public class EntriesList extends JList<Entry> {
 			//sort
 			Collections.sort(this.entries);
 			
-			//TODO: do i need this
 			this.fireContentsChanged(this, 0, this.entries.size());
 		}
 		
@@ -139,7 +136,7 @@ public class EntriesList extends JList<Entry> {
 	/**
 	 * Custom cell renderer that displays the entry's icon and name, and a favorite icon if the entry is favorited.
 	 */
-	private static class EntryListCellRenderer extends DefaultListCellRenderer {
+	private class EntryListCellRenderer extends DefaultListCellRenderer {
 		
 		private static ImageIcon favoritedIcon;
 		private static final HashMap<Image, ImageIcon> iconCache = new HashMap<>();
@@ -176,6 +173,11 @@ public class EntriesList extends JList<Entry> {
 				
 				this.setIcon(iconCache.computeIfAbsent(entry.getIcon(), ImageIcon::new));
 				this.setText(entry.getMetadata().name);
+				
+				final EntryContainer entryContainer = EntriesList.this.entryContainers.get(entry);
+				if(entryContainer != null && entryContainer.isEditMode()) {
+					this.setText("* " + this.getText());
+				}
 				
 				if(entry.getMetadata().favorite) {
 					this.container.add(this.favoriteLabel);
