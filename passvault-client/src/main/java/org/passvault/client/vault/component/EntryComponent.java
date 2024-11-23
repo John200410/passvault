@@ -1,5 +1,6 @@
 package org.passvault.client.vault.component;
 
+import com.formdev.flatlaf.ui.FlatRoundBorder;
 import org.passvault.core.entry.Entry;
 
 import javax.swing.*;
@@ -34,6 +35,7 @@ public abstract class EntryComponent extends JPanel {
 		//this.setBackground(new Color(40, 42, 51));
 		this.setBackground(parent.getBackground().brighter());
 		
+		this.setBorder(new FlatRoundBorder());
 		this.setLayout(new GridBagLayout());
 		
 		this.constraints = new GridBagConstraints();
