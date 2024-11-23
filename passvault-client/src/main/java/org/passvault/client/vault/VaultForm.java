@@ -7,6 +7,8 @@ import org.passvault.client.vault.component.EntryContainer;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
+import org.passvault.core.entry.item.items.PasswordItem;
+import org.passvault.core.entry.item.items.UsernameItem;
 import org.passvault.core.vault.FileVault;
 import org.passvault.core.vault.IVault;
 
@@ -134,6 +136,10 @@ public class VaultForm extends JFrame {
 				metadata.favorite = false;
 				
 				final Entry entry = new Entry(metadata, null);
+				
+				entry.getItems().add(new UsernameItem("Username", ""));
+				entry.getItems().add(new PasswordItem("Password", ""));
+				
 				this.vault.commitEntry(entry);
 				
 				this.updateEntryList();
