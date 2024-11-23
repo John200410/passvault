@@ -1,19 +1,17 @@
 package org.passvault.client.vault;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.passvault.client.Main;
+import org.passvault.client.PassVaultClient;
 import org.passvault.client.generator.GeneratorParameters;
 import org.passvault.client.generator.PasswordGeneratorForm;
 import org.passvault.client.vault.component.EntryContainer;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
+import org.passvault.core.vault.FileVault;
 import org.passvault.core.vault.IVault;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -60,6 +58,12 @@ public class VaultForm extends JFrame {
 	public static VaultForm open(IVault vault) {
 		final VaultForm frame = new VaultForm(vault);
 		
+		if(vault instanceof FileVault fileVault) {
+			frame.setTitle("PassVault - " + fileVault.getFile().getName());
+			PassVaultClient.SETTINGS.previousVaultLocation = fileVault.getFile().getAbsolutePath();
+			PassVaultClient.saveSettings();
+		}
+		
 		frame.setLocationRelativeTo(null); //center of screen
 		frame.setVisible(true);
 		return frame;
@@ -75,7 +79,7 @@ public class VaultForm extends JFrame {
 		this.pack();
 		
 		this.setMinimumSize(new Dimension(800, 300));
-		this.setIconImage(Main.ICON);
+		this.setIconImage(PassVaultClient.ICON);
 		
 		this.entriesList.setModel(new EntriesList.EntriesListModel(vault));
 		

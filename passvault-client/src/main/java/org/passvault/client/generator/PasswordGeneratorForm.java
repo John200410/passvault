@@ -1,22 +1,13 @@
 package org.passvault.client.generator;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import org.passvault.client.Main;
+import org.passvault.client.PassVaultClient;
 import org.passvault.core.Globals;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.util.Locale;
 
 /**
  * ASCII Password Generator
@@ -78,7 +69,7 @@ public class PasswordGeneratorForm extends JFrame {
 		this.pack();
 		this.setResizable(false);
 		
-		this.setIconImage(Main.ICON);
+		this.setIconImage(PassVaultClient.ICON);
 		
 		this.initializeComponents(this.params);
 		this.updateValues(this.params);

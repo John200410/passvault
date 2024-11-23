@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
 	implementation(project(':passvault-core'))
+	implementation 'com.google.code.gson:gson:2.11.0'
 	
 	//ui stuff
 	implementation "com.jetbrains.intellij.java:java-gui-forms-rt:+"

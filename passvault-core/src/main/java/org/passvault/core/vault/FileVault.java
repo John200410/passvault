@@ -17,7 +17,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.zip.ZipEntry;
@@ -38,15 +37,11 @@ public class FileVault implements IVault {
 	public static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	public static final SecretKeyFactory SECRET_KEY_FACTORY;
 	
-	
-	// The number of times that the password is hashed during the derivation of the symmetric key
-	private static final int PBKDF2_ITERATION_COUNT = 300_000;
-	private static final int PBKDF2_SALT_LENGTH = 16; //128 bits
-	private static final int AES_KEY_LENGTH = 256; //in bits
-	// An initialization vector size
-	private static final int GCM_NONCE_LENGTH = 12; //96 bits
-	// An authentication tag size
-	private static final int GCM_TAG_LENGTH = 128; //in bits
+	private static final int PBKDF2_ITERATION_COUNT = 300_000; //the number of times that the password is hashed during the derivation of the symmetric key
+	private static final int PBKDF2_SALT_LENGTH = 16;
+	private static final int AES_KEY_LENGTH_BITS = 256;
+	private static final int GCM_NONCE_LENGTH = 12;
+	private static final int GCM_TAG_LENGTH_BITS = 128; //authentication tag size in bits
 	
 	static {
 		SecretKeyFactory factory = null;
@@ -74,7 +69,9 @@ public class FileVault implements IVault {
 	 */
 	private Cipher encryptionCipher = null;
 	
-	//random salt and nonce generated for encrypting this vault
+	/**
+	 * Random salt and nonce generated for encrypting this vault
+	 */
 	private final byte[] salt = new byte[PBKDF2_SALT_LENGTH];
 	private final byte[] nonce = new byte[GCM_NONCE_LENGTH];
 	
@@ -109,12 +106,12 @@ public class FileVault implements IVault {
 			}
 			
 			final byte[] decryptionSecret = SECRET_KEY_FACTORY.generateSecret(
-					new PBEKeySpec(password, this.salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH)
+					new PBEKeySpec(password, this.salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH_BITS)
 			).getEncoded();
 			final SecretKey decryptionKey = new SecretKeySpec(decryptionSecret, "AES");
 			
 			final Cipher decryptCipher = Cipher.getInstance("AES/GCM/NoPadding");
-			decryptCipher.init(Cipher.DECRYPT_MODE, decryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH, this.nonce));
+			decryptCipher.init(Cipher.DECRYPT_MODE, decryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, this.nonce));
 			
 			try(final CipherInputStream cis = new CipherInputStream(fis, decryptCipher)) {
 				
@@ -209,13 +206,13 @@ public class FileVault implements IVault {
 			
 			//generate secret key for encryption
 			final byte[] encryptionSecret = SECRET_KEY_FACTORY.generateSecret(
-					new PBEKeySpec(password, this.salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH)
+					new PBEKeySpec(password, this.salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH_BITS)
 			).getEncoded();
 			final SecretKey encryptionKey = new SecretKeySpec(encryptionSecret, "AES");
 			
 			//setup cipher
 			this.encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-			this.encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH, this.nonce));
+			this.encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, this.nonce));
 		} catch(Throwable e) {
 			Globals.LOGGER.severe("Error initializing encryption");
 			e.printStackTrace();
@@ -256,6 +253,10 @@ public class FileVault implements IVault {
 		}
 	}
 	
+	public File getFile() {
+		return this.file;
+	}
+	
 	public static FileVault createNewVault(File file, char[] password) throws Exception {
 		
 		final byte[] salt = new byte[PBKDF2_SALT_LENGTH];
@@ -267,13 +268,13 @@ public class FileVault implements IVault {
 		
 		//generate secret key for encryption
 		final byte[] encryptionSecret = SECRET_KEY_FACTORY.generateSecret(
-				new PBEKeySpec(password, salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH)
+				new PBEKeySpec(password, salt, PBKDF2_ITERATION_COUNT, AES_KEY_LENGTH_BITS)
 		).getEncoded();
 		final SecretKey encryptionKey = new SecretKeySpec(encryptionSecret, "AES");
 		
 		//setup cipher
 		final Cipher encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-		encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH, nonce));
+		encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, nonce));
 		
 		try(final FileOutputStream fos = new FileOutputStream(file)) {
 			

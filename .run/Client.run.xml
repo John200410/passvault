@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Client" type="Application" factoryName="Application">
     <option name="ALTERNATIVE_JRE_PATH" value="BUNDLED" />
-    <option name="MAIN_CLASS_NAME" value="org.passvault.client.Main" />
+    <option name="MAIN_CLASS_NAME" value="org.passvault.client.PassVaultClient" />
     <module name="passvault.passvault-client.main" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run" />
     <method v="2">

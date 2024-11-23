@@ -1,16 +1,14 @@
 package org.passvault.client.vault;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.passvault.client.Main;
+import org.passvault.client.PassVaultClient;
 import org.passvault.core.Globals;
 import org.passvault.core.vault.FileVault;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.io.File;
 
@@ -22,8 +20,8 @@ public class VaultUnlockForm extends JFrame {
 	private JPanel rootPanel;
 	private JButton openFileButton;
 	
-	public static VaultUnlockForm open(VaultUnlockForm parent, boolean create) {
-		final VaultUnlockForm frame = new VaultUnlockForm(parent, create);
+	public static VaultUnlockForm open(VaultUnlockForm parent) {
+		final VaultUnlockForm frame = new VaultUnlockForm(parent, parent != null);
 		
 		frame.setLocationRelativeTo(parent); //center of screen
 		frame.setVisible(true);
@@ -40,10 +38,14 @@ public class VaultUnlockForm extends JFrame {
 		
 		this.setResizable(false);
 		this.setSize(350, 211);
-		this.setIconImage(Main.ICON);
+		this.setIconImage(PassVaultClient.ICON);
 		
 		//set default file location
-		this.fileLocationTextField.setText(Main.APP_DIR.getAbsolutePath() + (createMode ? File.separator + "vault.pv" : ""));
+		this.fileLocationTextField.setText(PassVaultClient.APP_DIR.getAbsolutePath() + (createMode ? File.separator + "vault.pv" : ""));
+		
+		if(PassVaultClient.SETTINGS.previousVaultLocation != null && !PassVaultClient.SETTINGS.previousVaultLocation.isBlank()) {
+			this.fileLocationTextField.setText(PassVaultClient.SETTINGS.previousVaultLocation);
+		}
 		
 		if(createMode) {
 			this.newVaultButton.setText("Create Vault");
@@ -54,6 +56,11 @@ public class VaultUnlockForm extends JFrame {
 				File file = new File(this.fileLocationTextField.getText());
 				if(file.isDirectory()) {
 					file = new File(file, "vault.pv");
+				}
+				
+				if(file.exists()) {
+					JOptionPane.showMessageDialog(this, "File already exists", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				
 				try {
@@ -74,7 +81,7 @@ public class VaultUnlockForm extends JFrame {
 			this.fileLocationTextField.setEnabled(false);
 			
 			//add button listeners
-			this.newVaultButton.addActionListener(e -> VaultUnlockForm.open(this, true));
+			this.newVaultButton.addActionListener(e -> VaultUnlockForm.open(this));
 			
 			this.loginButton.addActionListener(e -> {
 				
