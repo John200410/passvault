@@ -8,6 +8,13 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
+    
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+    
 }
 
 subprojects {

@@ -27,17 +27,15 @@ import java.util.HashMap;
 public class EntriesList extends JList<Entry> {
 	
 	private final VaultForm vaultForm;
-	private final IVault vault;
 	
 	/**
 	 * A map of entries to their corresponding panels.
 	 */
 	private final HashMap<Entry, EntryContainer> entryContainers = new HashMap<>();
 	
-	public EntriesList(VaultForm vaultForm, IVault vault) {
-		super(new EntriesListModel(vault));
+	public EntriesList(VaultForm vaultForm) {
+		super();
 		this.vaultForm = vaultForm;
-		this.vault = vault;
 		
 		this.setCellRenderer(new EntryListCellRenderer());
 		
@@ -98,7 +96,7 @@ public class EntriesList extends JList<Entry> {
 		return this.entryContainers.computeIfAbsent(entry, e -> new EntryContainer(this.vaultForm, entry));
 	}
 	
-	private static class EntriesListModel extends AbstractListModel<Entry> {
+	public static class EntriesListModel extends AbstractListModel<Entry> {
 		
 		private final IVault vault;
 		private final ArrayList<Entry> entries = new ArrayList<>();

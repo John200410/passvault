@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.passvault.client.LoginForm">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.passvault.client.vault.VaultUnlockForm">
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
@@ -21,7 +21,7 @@
         </properties>
         <border type="none" title="Vault Master Password"/>
         <children>
-          <component id="c7214" class="javax.swing.JPasswordField" binding="passwordField1" default-binding="true">
+          <component id="c7214" class="javax.swing.JPasswordField" binding="masterPasswordTextField">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -47,7 +47,7 @@
         <children>
           <component id="57e70" class="javax.swing.JButton" binding="loginButton" default-binding="true">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Login"/>
@@ -55,7 +55,7 @@
           </component>
           <component id="521cf" class="javax.swing.JButton" binding="newVaultButton" default-binding="true">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="New Vault"/>
@@ -71,7 +71,7 @@
         <properties/>
         <border type="none" title="Vault File Location"/>
         <children>
-          <component id="97309" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+          <component id="97309" class="javax.swing.JTextField" binding="fileLocationTextField">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -79,7 +79,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="8b84a" class="javax.swing.JButton" binding="openButton" custom-create="true" default-binding="true">
+          <component id="8b84a" class="javax.swing.JButton" binding="openFileButton" custom-create="true">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>

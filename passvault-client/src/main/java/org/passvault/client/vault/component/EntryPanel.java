@@ -29,9 +29,9 @@ public class EntryPanel extends JPanel {
 	/**
 	 * Constants
 	 */
-	private static final ColumnSpec COLUMN_GAP_SPEC = ColumnSpec.createGap(new ConstantSize(15, ConstantSize.DLUX));
+	private static final ColumnSpec COLUMN_GAP_SPEC = new ColumnSpec(new ConstantSize(15, ConstantSize.DLUX));
 	private static final ColumnSpec COLUMN_SPEC = new ColumnSpec(ColumnSpec.FILL, Sizes.DLUX1, FormSpec.DEFAULT_GROW);
-	private static final RowSpec GAP_ROW_SPEC = RowSpec.createGap(new ConstantSize(10, ConstantSize.DLUY));
+	private static final RowSpec GAP_ROW_SPEC = new RowSpec(new ConstantSize(10, ConstantSize.DLUY));
 	private static final RowSpec ROW_SPEC = new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.NO_GROW);
 	
 	

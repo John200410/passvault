@@ -7,7 +7,9 @@ dependencies {
 	
 	//ui stuff
 	implementation "com.jetbrains.intellij.java:java-gui-forms-rt:+"
-	implementation "com.jgoodies:jgoodies-forms:1.9.0"
+	//noinspection GradlePackageUpdate
+	implementation "com.jgoodies:forms:1.1-preview"
+	
 	implementation 'com.formdev:flatlaf:3.5.1'
 	implementation 'com.formdev:flatlaf-extras:3.5.1'
 	implementation 'com.formdev:flatlaf-intellij-themes:3.5.1'
@@ -26,6 +28,9 @@ jar {
 		)
 	}
 	from {
+		
+		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
 }
