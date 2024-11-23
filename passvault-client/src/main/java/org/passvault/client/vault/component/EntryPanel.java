@@ -3,10 +3,7 @@ package org.passvault.client.vault.component;
 import com.formdev.flatlaf.icons.FlatAbstractIcon;
 import com.github.rhwood.jsplitbutton.JSplitButton;
 import com.jgoodies.forms.layout.*;
-import org.passvault.client.vault.component.item.EntryItemComponentBase;
-import org.passvault.client.vault.component.item.SimpleTextItemComponent;
-import org.passvault.client.vault.component.item.TOTPComponent;
-import org.passvault.client.vault.component.item.UrlComponent;
+import org.passvault.client.vault.component.item.*;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.entry.item.TextItemBase;
@@ -221,11 +218,13 @@ public class EntryPanel extends JPanel {
 		EntryItemComponentBase<?> component = null;
 		
 		if(item instanceof TOTPItem totpItem) {
-			component = new TOTPComponent(this, entry, totpItem);
+			component = new TOTPComponent(this, this.entry, totpItem);
 		} else if(item instanceof UrlItem urlItem) {
-			component = new UrlComponent(this, entry, urlItem);
+			component = new UrlComponent(this, this.entry, urlItem);
+		} else if(item instanceof PasswordItem passwordItem) {
+			component = new PasswordComponent(this, this.entry, passwordItem);
 		} else if(item instanceof TextItemBase textItem) {
-			component = new SimpleTextItemComponent(this, entry, textItem, true);
+			component = new SimpleTextItemComponent(this, this.entry, textItem, true);
 		}
 		
 		if(component != null) {
@@ -255,10 +254,6 @@ public class EntryPanel extends JPanel {
 	
 	public EntryContainer getContainer() {
 		return this.container;
-	}
-	
-	public ArrayList<EntryItemComponentBase<? extends IEntryItem<?>>> getItemComponentsList() {
-		return this.itemComponents;
 	}
 	
 	/**

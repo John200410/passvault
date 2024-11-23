@@ -1,7 +1,6 @@
 package org.passvault.client.vault;
 
 import org.passvault.client.PassVaultClient;
-import org.passvault.client.generator.GeneratorParameters;
 import org.passvault.client.generator.PasswordGeneratorForm;
 import org.passvault.client.vault.component.EntryContainer;
 import org.passvault.core.Globals;
@@ -156,7 +155,7 @@ public class VaultForm extends JFrame {
 		});
 		
 		this.passwordGeneratorButton.addActionListener((l) -> {
-			PasswordGeneratorForm.open(new GeneratorParameters.Builder());
+			PasswordGeneratorForm.open(this, PassVaultClient.SETTINGS.preferredGeneratorParams, null);
 		});
 		
 		//setup background image
