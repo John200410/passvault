@@ -30,6 +30,9 @@ public abstract class EntryItemComponentBase<T extends IEntryItem<?>> extends En
 		this.itemNameTextComponent = new SimpleTextItemComponent.ValueTextField();
 		this.itemNameTextComponent.setVisible(false);
 		this.itemNameTextComponent.setEditable(false);
+		this.itemNameTextComponent.setBorder(BorderFactory.createEmptyBorder());
+		this.itemNameTextComponent.setBackground(this.getBackground());
+		
 		
 		this.add(this.itemNameTextComponent, this.constraints);
 		
