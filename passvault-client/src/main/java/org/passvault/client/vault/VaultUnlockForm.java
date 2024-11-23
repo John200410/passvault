@@ -10,6 +10,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 
 public class VaultUnlockForm extends JFrame {
@@ -39,6 +40,33 @@ public class VaultUnlockForm extends JFrame {
 		this.setResizable(false);
 		this.setSize(350, 211);
 		this.setIconImage(PassVaultClient.ICON);
+		
+		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+			@Override
+			protected boolean accept(Component c) {
+				if(!(c instanceof JTextComponent)) {
+					return false;
+				}
+				return super.accept(c);
+			}
+		});
+		
+		if(createMode) {
+			this.masterPasswordTextField.setAction(new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					VaultUnlockForm.this.newVaultButton.doClick();
+				}
+			});
+		} else {
+			this.masterPasswordTextField.setAction(new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					VaultUnlockForm.this.loginButton.doClick();
+				}
+			});
+			this.masterPasswordTextField.requestFocusInWindow();
+		}
 		
 		//set default file location
 		this.fileLocationTextField.setText(PassVaultClient.APP_DIR.getAbsolutePath() + (createMode ? File.separator + "vault.pv" : ""));

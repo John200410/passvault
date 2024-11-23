@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -80,6 +81,16 @@ public class VaultForm extends JFrame {
 		
 		this.setMinimumSize(new Dimension(800, 300));
 		this.setIconImage(PassVaultClient.ICON);
+		
+		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+			@Override
+			protected boolean accept(Component c) {
+				if(c instanceof JTextComponent) {
+					return true;
+				}
+				return super.accept(c);
+			}
+		});
 		
 		this.entriesList.setModel(new EntriesList.EntriesListModel(vault));
 		

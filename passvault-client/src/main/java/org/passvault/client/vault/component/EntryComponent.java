@@ -3,6 +3,7 @@ package org.passvault.client.vault.component;
 import org.passvault.core.entry.Entry;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 /**
@@ -19,6 +20,16 @@ public abstract class EntryComponent extends JPanel {
 	public EntryComponent(EntryPanel parent, Entry entry) {
 		this.parent = parent;
 		this.entry = entry;
+		
+		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+			@Override
+			protected boolean accept(Component c) {
+				if(!(c instanceof JTextComponent)) {
+					return false;
+				}
+				return super.accept(c);
+			}
+		});
 		
 		//this.setBackground(new Color(40, 42, 51));
 		this.setBackground(parent.getBackground().brighter());
