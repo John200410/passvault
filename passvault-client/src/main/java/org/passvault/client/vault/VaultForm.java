@@ -98,7 +98,7 @@ public class VaultForm extends JFrame {
 			}
 		});
 		
-		this.entriesList.setModel(new EntriesList.EntriesListModel(vault));
+		this.entriesList.setModel(new EntriesList.EntriesListModel(this, vault));
 		
 		//this.openButton.setIcon(new FlatFileChooserUI());
 		
