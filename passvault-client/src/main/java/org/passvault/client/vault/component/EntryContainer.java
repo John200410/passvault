@@ -91,9 +91,9 @@ public class EntryContainer extends Container {
 					vaultForm.updateEntryList();
 					vaultForm.viewEntry(null);
 				} catch (Exception ex) {
-					//TODO: error dialog
 					Globals.LOGGER.severe("Error deleting entry");
 					ex.printStackTrace();
+					JOptionPane.showMessageDialog(EntryContainer.this, "Error deleting entry: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -122,9 +122,9 @@ public class EntryContainer extends Container {
 			try {
 				vaultForm.getVault().commitEntry(entry);
 			} catch (Exception ex) {
-				//TODO: error handling
 				Globals.LOGGER.severe("Error committing entry");
 				ex.printStackTrace();
+				JOptionPane.showMessageDialog(EntryContainer.this, "Error committing entry: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
 			vaultForm.updateEntryList();
@@ -148,9 +148,9 @@ public class EntryContainer extends Container {
 		try {
 			this.entryPanel.disableEditingMode(save);
 		} catch (Exception e) {
-			//TODO: error dialog
 			Globals.LOGGER.severe("Error disabling editing mode");
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(EntryContainer.this, "Error disabling edit mode: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -159,9 +159,9 @@ public class EntryContainer extends Container {
 				this.vaultForm.getVault().commitEntry(this.entry);
 				this.vaultForm.updateEntryList();
 			} catch (Exception e) {
-				//TODO: error handle
 				Globals.LOGGER.severe("Error committing entry");
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(EntryContainer.this, "Error committing entry: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		

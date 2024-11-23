@@ -166,8 +166,6 @@ public class VaultUnlockForm extends JFrame {
 	}
 	
 	private void createUIComponents() {
-		// TODO: place custom component creation code here
-		
 		//Creating the buttons
 		this.openFileButton = new JButton("Open", UIManager.getIcon("FileView.directoryIcon"));
 		this.openFileButton.setHorizontalTextPosition(SwingConstants.LEFT);

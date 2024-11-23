@@ -151,9 +151,9 @@ public class VaultForm extends JFrame {
 				//enable editing mode when creating new entry
 				this.entryContainer.enableEditingMode();
 			} catch(Exception ex) {
-				//TODO: exception handle
 				Globals.LOGGER.warning("Error creating new entry: " + ex.getMessage());
 				ex.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Error creating new entry: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
@@ -278,9 +278,6 @@ public class VaultForm extends JFrame {
 	}
 	
 	private void createUIComponents() {
-		// TODO: place custom component creation code here
-		
-		
 		this.entriesList = new EntriesList(this);
 		this.entriesList.addListSelectionListener(e -> {
 			if(e.getValueIsAdjusting()) {

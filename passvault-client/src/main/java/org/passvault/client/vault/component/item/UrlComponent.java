@@ -141,10 +141,9 @@ public class UrlComponent extends EntryItemComponentBase<UrlItem> {
 						
 						Desktop.getDesktop().browse(URI.create(urlStr));
 					} catch(IOException ex) {
-						//TODO: error handling with dialog
-						
 						Globals.LOGGER.severe("Failed to open URL: " + urlStr);
 						ex.printStackTrace();
+						JOptionPane.showMessageDialog(UrlComponent.this, "Failed to open URL: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});

@@ -107,7 +107,7 @@ public class EntriesList extends JList<Entry> {
 		return this.entryContainers.computeIfAbsent(entry, e -> new EntryContainer(this.vaultForm, entry));
 	}
 	
-	public static class EntriesListModel extends AbstractListModel<Entry> {
+	public class EntriesListModel extends AbstractListModel<Entry> {
 		
 		private final IVault vault;
 		private final ArrayList<Entry> entries = new ArrayList<>();
@@ -122,7 +122,7 @@ public class EntriesList extends JList<Entry> {
 			try {
 				this.entries.addAll(this.vault.getEntries());
 			} catch(Exception e) {
-				//TODO: handle exception
+				JOptionPane.showMessageDialog(EntriesList.this.vaultForm, "Error getting entries from vault: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				throw new RuntimeException("Error getting entries from vault: " + e.getMessage(), e);
 			}
 			
