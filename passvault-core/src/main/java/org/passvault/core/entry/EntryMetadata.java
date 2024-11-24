@@ -1,7 +1,7 @@
 package org.passvault.core.entry;
 
 /**
- * Object containing metadata for an {@link IEntry}.
+ * Object containing metadata for an {@link Entry}.
  *
  * @author john@chav.is 11/8/2024
  */

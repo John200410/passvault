@@ -10,6 +10,10 @@ import org.passvault.core.entry.item.TextItemBase;
  */
 public class UsernameItem extends TextItemBase {
 	
+	public UsernameItem(String value) {
+		super(ItemType.USERNAME, "Username", value);
+	}
+	
 	public UsernameItem(String name, String value) {
 		super(ItemType.USERNAME, name, value);
 	}

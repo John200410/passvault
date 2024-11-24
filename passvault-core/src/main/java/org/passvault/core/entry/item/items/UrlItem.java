@@ -14,7 +14,11 @@ import java.util.StringJoiner;
  */
 public class UrlItem extends ItemBase<String[]> {
 	
-	public UrlItem(String name, String[] value) {
+	public UrlItem(String... value) {
+		super(ItemType.URL, "URLs", value);
+	}
+	
+	public UrlItem(String name, String... value) {
 		super(ItemType.URL, name, value);
 	}
 	

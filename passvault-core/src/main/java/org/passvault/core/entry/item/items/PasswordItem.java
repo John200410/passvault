@@ -10,6 +10,10 @@ import org.passvault.core.entry.item.TextItemBase;
  */
 public class PasswordItem extends TextItemBase {
 	
+	public PasswordItem(String value) {
+		super(ItemType.PASSWORD, "Password", value);
+	}
+	
 	public PasswordItem(String name, String value) {
 		super(ItemType.PASSWORD, name, value);
 	}
