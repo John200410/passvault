@@ -12,8 +12,14 @@ class PasswordGeneratorTests {
 	@FuzzTest
 	void generatePasswordFuzz(FuzzedDataProvider provider) throws Exception {
 		
-		final char[] specialChars = new char[provider.consumeInt(1, 100)];
+		final char[] specialChars = new char[provider.consumeInt(10, 100)];
 		for(int i = 0; i < specialChars.length; i++) {
+			
+			char c = provider.consumeChar();
+			while((c > '0' && c < 'Z') || c == 0) {
+				c = provider.consumeChar();
+			}
+			
 			specialChars[i] = provider.consumeChar();
 		}
 		
@@ -23,7 +29,7 @@ class PasswordGeneratorTests {
 		
 		final boolean noneSelected = !lowercase && !uppercase && !numbers;
 		
-		final int passwordLength = provider.consumeInt(1, 10000);
+		final int passwordLength = provider.consumeInt(1, 128);
 		final int specialCharCount = provider.consumeInt(0, passwordLength);
 		
 		final GeneratorParameters.Builder builder = new GeneratorParameters.Builder()

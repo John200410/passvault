@@ -22,6 +22,10 @@ dependencies {
 	testImplementation('com.code-intelligence:jazzer-junit:0.22.1')
 }
 
+task('fuzzTest', type: Test) {
+	environment "JAZZER_FUZZ", 1
+	useJUnitPlatform()
+}
 
 // build fat jar with all dependencies
 jar {
