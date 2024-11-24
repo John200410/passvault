@@ -5,6 +5,7 @@ import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.EntryMetadata;
 import org.passvault.core.entry.item.IEntryItem;
 import org.passvault.core.exception.VaultException;
+import org.passvault.core.exception.VaultInvalidPasswordException;
 import org.passvault.core.exception.VaultLockedException;
 
 import javax.crypto.*;
@@ -156,6 +157,11 @@ public class FileVault implements IVault {
 		} catch(FileNotFoundException e) {
 			throw new VaultException("Vault file not found", e);
 		} catch(IOException e) {
+			
+			if(e.getCause() instanceof AEADBadTagException) {
+				throw new VaultInvalidPasswordException();
+			}
+			
 			throw new VaultException("Error reading vault file", e);
 		} catch(InvalidKeySpecException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException e) {
 			throw new VaultException("Error initializing encryption", e);
