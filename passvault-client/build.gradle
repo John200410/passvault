@@ -18,6 +18,8 @@ dependencies {
 	//split button for java swing
 	implementation 'com.github.rhwood:jsplitbutton:2.0.0'
 	
+	//fuzz testing
+	testImplementation('com.code-intelligence:jazzer-junit:0.22.1')
 }
 
 
