@@ -10,7 +10,7 @@ public enum ItemType {
 	USERNAME("Username"),
 	EMAIL("Email"),
 	PASSWORD("Password", true),
-	TOTP("2FA"),
+	AUTHENTICATOR("2FA"),
 	URL("URLs"),
 	FILE("Attachment"),
 	NOTE("Notes"),

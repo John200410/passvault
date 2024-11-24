@@ -8,19 +8,19 @@ import org.passvault.core.entry.item.ItemType;
 import org.passvault.core.entry.item.TextItemBase;
 
 /**
- * Item used to store and generate Time-based One-Time Passwords (TOTP).
+ * Item used to store authenticator keys and generate Time-based One-Time Passwords (TOTP).
  *
  * @author john@chav.is 11/21/2024
  */
-public class TOTPItem extends TextItemBase {
+public class AuthenticatorItem extends TextItemBase {
 	
-	public static final DefaultCodeGenerator TOTP = new DefaultCodeGenerator();
+	public static final DefaultCodeGenerator CODE_GENERATOR = new DefaultCodeGenerator();
 	
 	private String currentCode = "";
 	private long lastTimeUpdated = 0;
 	
-	public TOTPItem(String name, String value) {
-		super(ItemType.TOTP, name, value);
+	public AuthenticatorItem(String name, String value) {
+		super(ItemType.AUTHENTICATOR, name, value);
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class TOTPItem extends TextItemBase {
 		
 		if(currentBucket != lastTimeUpdated) {
 			try {
-				this.currentCode = TOTP.generate(this.getValue(), currentBucket);
+				this.currentCode = CODE_GENERATOR.generate(this.getValue(), currentBucket);
 			} catch(CodeGenerationException e) {
 				Globals.LOGGER.severe("Error generating TOTP code: " + e.getMessage());
 				e.printStackTrace();

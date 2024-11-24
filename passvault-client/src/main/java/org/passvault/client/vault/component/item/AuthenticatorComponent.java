@@ -2,18 +2,18 @@ package org.passvault.client.vault.component.item;
 
 import org.passvault.client.vault.component.EntryPanel;
 import org.passvault.core.entry.Entry;
-import org.passvault.core.entry.item.items.TOTPItem;
+import org.passvault.core.entry.item.items.AuthenticatorItem;
 
 import javax.swing.*;
 
 /**
  * @author john@chav.is 11/22/2024
  */
-public class TOTPComponent extends SimpleTextItemComponent {
+public class AuthenticatorComponent extends SimpleTextItemComponent {
 	
 	private final JLabel timeLabel;
 	
-	public TOTPComponent(EntryPanel parent, Entry entry, TOTPItem item) {
+	public AuthenticatorComponent(EntryPanel parent, Entry entry, AuthenticatorItem item) {
 		super(parent, entry, item, true);
 		
 		this.timeLabel = new JLabel();

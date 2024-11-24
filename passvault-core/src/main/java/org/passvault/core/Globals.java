@@ -57,8 +57,8 @@ public class Globals {
 								return new EmailItem(name, obj.get("value").getAsString());
 							case PASSWORD:
 								return new PasswordItem(name, obj.get("value").getAsString());
-							case TOTP:
-								return new TOTPItem(name, obj.get("value").getAsString());
+							case AUTHENTICATOR:
+								return new AuthenticatorItem(name, obj.get("value").getAsString());
 							case URL:
 								
 								final JsonArray array = obj.get("value").getAsJsonArray();

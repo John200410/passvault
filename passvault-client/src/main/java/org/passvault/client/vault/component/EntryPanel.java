@@ -217,8 +217,8 @@ public class EntryPanel extends JPanel {
 		
 		EntryItemComponentBase<?> component = null;
 		
-		if(item instanceof TOTPItem totpItem) {
-			component = new TOTPComponent(this, this.entry, totpItem);
+		if(item instanceof AuthenticatorItem authenticatorItem) {
+			component = new AuthenticatorComponent(this, this.entry, authenticatorItem);
 		} else if(item instanceof UrlItem urlItem) {
 			component = new UrlComponent(this, this.entry, urlItem);
 		} else if(item instanceof PasswordItem passwordItem) {
@@ -338,7 +338,7 @@ public class EntryPanel extends JPanel {
 			popup.add(new AbstractAction("2FA Authenticator") {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new TOTPItem("2FA Authenticator", "")));
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new AuthenticatorItem("2FA Authenticator", "")));
 				}
 			});
 			popup.add(new AbstractAction("URLs") {

@@ -127,11 +127,11 @@ class ItemTests {
 		final DefaultSecretGenerator secretGenerator = new DefaultSecretGenerator();
 		final String secret = secretGenerator.generate();
 		
-		final TOTPItem item = new TOTPItem("TOTP", secret);
+		final AuthenticatorItem item = new AuthenticatorItem("TOTP", secret);
 		
 		Assertions.assertEquals(secret, item.getValue());
 		Assertions.assertEquals("TOTP", item.getName());
-		Assertions.assertEquals(ItemType.TOTP, item.getType());
+		Assertions.assertEquals(ItemType.AUTHENTICATOR, item.getType());
 		
 		item.update();
 		

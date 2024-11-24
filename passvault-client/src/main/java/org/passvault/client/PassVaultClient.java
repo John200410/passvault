@@ -16,6 +16,8 @@ import java.io.IOException;
 /**
  * The main class for initializing the PassVault client.
  *
+ * TODO: lock vault after inactivity
+ *
  * @author john@chav.is
  */
 public class PassVaultClient {
