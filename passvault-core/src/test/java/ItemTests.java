@@ -122,7 +122,7 @@ class ItemTests {
 	}
 	
 	@Test
-	void testTotpItem() throws ItemException {
+	void testAuthenticatorItem() throws ItemException {
 		
 		final DefaultSecretGenerator secretGenerator = new DefaultSecretGenerator();
 		final String secret = secretGenerator.generate();
