@@ -59,7 +59,7 @@ public class VaultForm extends JFrame {
 	private JSplitPane splitPane;
 	private JButton newEntryButton;
 	private JButton passwordGeneratorButton;
-	private JButton saveButton;
+	private JButton saveVaultButton;
 	private JButton aboutButton;
 	
 	public static VaultForm open(IVault vault) {
@@ -157,7 +157,7 @@ public class VaultForm extends JFrame {
 			}
 		});
 		
-		this.saveButton.addActionListener(e -> {
+		this.saveVaultButton.addActionListener(e -> {
 			try {
 				this.vault.save();
 				((FileVault) this.vault).setDirty(false);
@@ -227,13 +227,13 @@ public class VaultForm extends JFrame {
 					});
 				}
 				
-				if(((FileVault) vault).isDirty() && !saveButton.isEnabled()) {
+				if(((FileVault) vault).isDirty() && !saveVaultButton.isEnabled()) {
 					SwingUtilities.invokeLater(() -> {
-						saveButton.setEnabled(true);
+						saveVaultButton.setEnabled(true);
 					});
-				} else if(!((FileVault) vault).isDirty() && saveButton.isEnabled()) {
+				} else if(!((FileVault) vault).isDirty() && saveVaultButton.isEnabled()) {
 					SwingUtilities.invokeLater(() -> {
-						saveButton.setEnabled(false);
+						saveVaultButton.setEnabled(false);
 					});
 				}
 			}

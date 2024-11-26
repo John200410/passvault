@@ -107,10 +107,10 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="9fe88" class="javax.swing.JButton" binding="saveButton" default-binding="true">
+          <component id="9fe88" class="javax.swing.JButton" binding="saveVaultButton">
             <constraints/>
             <properties>
-              <text value="Save"/>
+              <text value="Save Vault"/>
             </properties>
           </component>
           <hspacer id="679e3">
