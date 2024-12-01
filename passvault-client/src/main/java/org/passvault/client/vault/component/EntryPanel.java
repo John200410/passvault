@@ -223,6 +223,8 @@ public class EntryPanel extends JPanel {
 			component = new UrlComponent(this, this.entry, urlItem);
 		} else if(item instanceof PasswordItem passwordItem) {
 			component = new PasswordComponent(this, this.entry, passwordItem);
+		} else if(item instanceof NoteItem noteItem) {
+			component = new NoteComponent(this, this.entry, noteItem);
 		} else if(item instanceof TextItemBase textItem) {
 			component = new SimpleTextItemComponent(this, this.entry, textItem, true);
 		}
@@ -335,16 +337,22 @@ public class EntryPanel extends JPanel {
 					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new PasswordItem("Password", "")));
 				}
 			});
+			popup.add(new AbstractAction("URLs") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new UrlItem("URLs", new String[1])));
+				}
+			});
 			popup.add(new AbstractAction("2FA Authenticator") {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new AuthenticatorItem("2FA Authenticator", "")));
 				}
 			});
-			popup.add(new AbstractAction("URLs") {
+			popup.add(new AbstractAction("Notes") {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new UrlItem("URLs", new String[1])));
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new NoteItem("")));
 				}
 			});
 			

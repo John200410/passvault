@@ -69,6 +69,8 @@ public class Globals {
 								}
 								
 								return new UrlItem(name, urls);
+							case NOTE:
+								return new NoteItem(name, obj.get("value").getAsString());
 							default:
 								throw new JsonParseException("Unknown item type: " + type);
 						}
