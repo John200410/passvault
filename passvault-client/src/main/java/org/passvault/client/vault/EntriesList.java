@@ -216,19 +216,19 @@ public class EntriesList extends JList<Entry> {
 		
 		@Override
 		public void setAnchorSelectionIndex(final int anchorIndex) {
-			Globals.LOGGER.info("setAnchorSelectionIndex: " + anchorIndex);
+			//Globals.LOGGER.info("setAnchorSelectionIndex: " + anchorIndex);
 			super.setAnchorSelectionIndex(anchorIndex);
 		}
 		
 		@Override
 		public void setLeadAnchorNotificationEnabled(final boolean flag) {
-			Globals.LOGGER.info("setLeadAnchorNotificationEnabled: " + flag);
+			//Globals.LOGGER.info("setLeadAnchorNotificationEnabled: " + flag);
 			super.setLeadAnchorNotificationEnabled(flag);
 		}
 		
 		@Override
 		public void setLeadSelectionIndex(final int leadIndex) {
-			Globals.LOGGER.info("setLeadSelectionIndex: " + leadIndex);
+			//Globals.LOGGER.info("setLeadSelectionIndex: " + leadIndex);
 			super.setLeadSelectionIndex(leadIndex);
 		}
 		
@@ -248,7 +248,7 @@ public class EntriesList extends JList<Entry> {
 				return;
 			}
 			
-			Globals.LOGGER.info("setSelectionInterval: " + index0 + ", " + index1);
+			//Globals.LOGGER.info("setSelectionInterval: " + index0 + ", " + index1);
 			
 			super.setSelectionInterval(index0, index1);
 		}
