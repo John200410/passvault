@@ -4,6 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.passvault.client.vault.component.EntryContainer;
 import org.passvault.core.Globals;
 import org.passvault.core.entry.Entry;
+import org.passvault.core.utils.MathUtils;
 import org.passvault.core.vault.IVault;
 
 import javax.swing.*;
@@ -38,6 +39,7 @@ public class EntriesList extends JList<Entry> {
 		this.setCellRenderer(new EntryListCellRenderer());
 		
 		//selection model that lets you toggle the selection
+		/*
 		this.setSelectionModel(new DefaultListSelectionModel() {
 			
 			boolean gestureStarted = false;
@@ -73,7 +75,8 @@ public class EntriesList extends JList<Entry> {
 					this.gestureStarted = false;
 				}
 			}
-		});
+		}); */
+		this.setSelectionModel(new EntryListSelectionModel());
 		
 		this.getModel().addListDataListener(new ListDataListener() {
 			@Override
@@ -208,4 +211,47 @@ public class EntriesList extends JList<Entry> {
 			return this;
 		}
 	}
+	
+	private class EntryListSelectionModel extends DefaultListSelectionModel {
+		
+		@Override
+		public void setAnchorSelectionIndex(final int anchorIndex) {
+			Globals.LOGGER.info("setAnchorSelectionIndex: " + anchorIndex);
+			super.setAnchorSelectionIndex(anchorIndex);
+		}
+		
+		@Override
+		public void setLeadAnchorNotificationEnabled(final boolean flag) {
+			Globals.LOGGER.info("setLeadAnchorNotificationEnabled: " + flag);
+			super.setLeadAnchorNotificationEnabled(flag);
+		}
+		
+		@Override
+		public void setLeadSelectionIndex(final int leadIndex) {
+			Globals.LOGGER.info("setLeadSelectionIndex: " + leadIndex);
+			super.setLeadSelectionIndex(leadIndex);
+		}
+		
+		@Override
+		public void setSelectionInterval(int index0, int index1) {
+			final int size = EntriesList.this.getModel().getSize();
+			
+			if(size > 0 && index0 >= 0) {
+				index0 = MathUtils.clamp(index0, 0, size);
+				index1 = index0;
+				
+				final Entry entry = EntriesList.this.getModel().getElementAt(index0);
+				EntriesList.this.vaultForm.viewEntry(entry);
+			} else {
+				EntriesList.this.vaultForm.viewEntry(null);
+				this.clearSelection();
+				return;
+			}
+			
+			Globals.LOGGER.info("setSelectionInterval: " + index0 + ", " + index1);
+			
+			super.setSelectionInterval(index0, index1);
+		}
+	}
+	
 }

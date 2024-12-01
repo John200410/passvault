@@ -148,6 +148,11 @@ public class VaultForm extends JFrame {
 				
 				this.entriesList.setSelectedValue(entry, true);
 				
+				final int selectedIndex = this.entriesList.getSelectedIndex();
+				final Entry selected = this.entriesList.getSelectedValue();
+				
+				this.viewEntry(entry);
+				
 				//enable editing mode when creating new entry
 				this.entryContainer.enableEditingMode();
 			} catch(Exception ex) {
@@ -279,14 +284,6 @@ public class VaultForm extends JFrame {
 	
 	private void createUIComponents() {
 		this.entriesList = new EntriesList(this);
-		this.entriesList.addListSelectionListener(e -> {
-			if(e.getValueIsAdjusting()) {
-				return;
-			}
-			
-			final Entry entry = this.entriesList.getSelectedValue();
-			this.viewEntry(entry);
-		});
 	}
 	
 }
