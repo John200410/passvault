@@ -113,6 +113,31 @@ public class Entry implements Comparable<Entry> {
 		} else if(!this.metadata.favorite && o.metadata.favorite) {
 			return 1;
 		}
-		return this.metadata.name.toLowerCase().compareTo(o.metadata.name.toLowerCase());
+		
+		final String thisName = this.metadata.name.toLowerCase();
+		final String otherName = o.metadata.name.toLowerCase();
+		
+		//special rule for numbered entries
+		final int tp1 = thisName.lastIndexOf("(");
+		final int tp2 = thisName.lastIndexOf(")");
+		final int op1 = otherName.lastIndexOf("(");
+		final int op2 = otherName.lastIndexOf(")");
+		if(tp1 != -1 && tp2 != -1 && tp2 > tp1 && op1 != -1 && op2 != -1 && op2 > op1) {
+			
+			
+			final String thisNum = thisName.substring(tp1 + 1, tp2);
+			final String otherNum = otherName.substring(op1 + 1, op2);
+			try {
+				final int thisInt = Integer.parseInt(thisNum);
+				final int otherInt = Integer.parseInt(otherNum);
+				if(thisInt != otherInt) {
+					return thisInt - otherInt;
+				}
+			} catch(NumberFormatException e) {
+				//do nothing
+			}
+		}
+		
+		return thisName.compareTo(otherName);
 	}
 }
