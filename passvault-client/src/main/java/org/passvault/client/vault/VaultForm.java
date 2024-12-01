@@ -1,5 +1,6 @@
 package org.passvault.client.vault;
 
+import org.passvault.client.AboutDialog;
 import org.passvault.client.PassVaultClient;
 import org.passvault.client.generator.PasswordGeneratorForm;
 import org.passvault.client.vault.component.EntryContainer;
@@ -172,6 +173,11 @@ public class VaultForm extends JFrame {
 				JOptionPane.showMessageDialog(this, "Error saving vault: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
+		
+		this.aboutButton.addActionListener(e -> {
+			AboutDialog.open(this);
+		});
+		
 		this.passwordGeneratorButton.addActionListener((l) -> {
 			PasswordGeneratorForm.open(this, PassVaultClient.SETTINGS.preferredGeneratorParams, null);
 		});

@@ -22,6 +22,8 @@ import java.io.IOException;
  */
 public class PassVaultClient {
 	
+	public static final String VERSION = "1.0.0";
+	
 	/**
 	 * The directory where settings are stored.
 	 * <p>
@@ -48,7 +50,7 @@ public class PassVaultClient {
 		
 		//load icon
 		try {
-			ICON = ImageIO.read(PassVaultClient.class.getResourceAsStream("/logo-icon.png"))
+			ICON = ImageIO.read(PassVaultClient.class.getResourceAsStream("/icon.png"))
 						  .getScaledInstance(64, 64, BufferedImage.SCALE_SMOOTH);
 		} catch(IOException e) {
 			Globals.LOGGER.warning("Error loading icon: " + e.getMessage());

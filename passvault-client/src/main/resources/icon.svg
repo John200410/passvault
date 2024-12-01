@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.72 56.72">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d1d3d4;
+      }
+
+      .cls-2 {
+        fill: #6d6e71;
+        stroke: #d1d3d4;
+        stroke-miterlimit: 10;
+        stroke-width: 6px;
+      }
+
+      .cls-3 {
+        fill: #414042;
+      }
+    </style>
+  </defs>
+  <rect class="cls-3" x="0" width="56.72" height="56.72" rx="10" ry="10"/>
+  <g id="spin">
+    <circle class="cls-2" cx="28.36" cy="28.36" r="10"/>
+    <g>
+      <polygon class="cls-1" points="26.86 38.2 29.86 38.2 31.36 52.51 25.36 52.51 26.86 38.2"/>
+      <polygon class="cls-1" points="18.53 29.97 19.46 32.83 6.31 38.67 4.46 32.97 18.53 29.97"/>
+      <polygon class="cls-1" points="23.78 19.51 21.36 21.27 11.73 10.58 16.59 7.05 23.78 19.51"/>
+      <polygon class="cls-1" points="35.36 21.27 32.93 19.51 40.13 7.05 44.98 10.58 35.36 21.27"/>
+      <polygon class="cls-1" points="37.26 32.83 38.19 29.97 52.26 32.97 50.4 38.67 37.26 32.83"/>
+    </g>
+  </g>
+</svg>
