@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 /**
  * Simple item that can be used for usernames, emails, passwords, etc
@@ -154,6 +155,14 @@ public class SimpleTextItemComponent extends EntryItemComponentBase<TextItemBase
 		}
 		
 		@Override
+		public void setText(String text) {
+			if(this.getText().equals(text)) {
+				return;
+			}
+			super.setText(text);
+		}
+		
+		@Override
 		public JComponent getComponent() {
 			return this;
 		}
@@ -166,6 +175,14 @@ public class SimpleTextItemComponent extends EntryItemComponentBase<TextItemBase
 		}
 		
 		@Override
+		public void setText(String text) {
+			if(this.getText().equals(text)) {
+				return;
+			}
+			super.setText(text);
+		}
+		
+		@Override
 		public JComponent getComponent() {
 			return this;
 		}
@@ -175,6 +192,14 @@ public class SimpleTextItemComponent extends EntryItemComponentBase<TextItemBase
 		public ValueSecretTextField() {
 			super();
 			this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		}
+		
+		@Override
+		public void setText(String text) {
+			if(Arrays.equals(this.getPassword(), text.toCharArray())) {
+				return;
+			}
+			super.setText(text);
 		}
 		
 		@Override
