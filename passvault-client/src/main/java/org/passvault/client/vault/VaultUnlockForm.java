@@ -20,6 +20,7 @@ public class VaultUnlockForm extends JFrame {
 	private JButton newVaultButton;
 	private JPanel rootPanel;
 	private JButton openFileButton;
+	private JButton hideShowButton;
 	
 	public static VaultUnlockForm open(VaultUnlockForm parent) {
 		final VaultUnlockForm frame = new VaultUnlockForm(parent, parent != null);
@@ -129,6 +130,18 @@ public class VaultUnlockForm extends JFrame {
 				}
 			});
 		}
+		this.hideShowButton.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(VaultUnlockForm.this.hideShowButton.getText().equals("Show")) {
+					VaultUnlockForm.this.masterPasswordTextField.setEchoChar((char) 0);
+					VaultUnlockForm.this.hideShowButton.setText("Hide");
+				} else {
+					VaultUnlockForm.this.masterPasswordTextField.setEchoChar('•');
+					VaultUnlockForm.this.hideShowButton.setText("Show");
+				}
+			}
+		});
 		
 		//add text field listeners
 		final DocumentListener documentListener = new DocumentListener() {
