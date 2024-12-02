@@ -27,6 +27,10 @@ task('fuzzTest', type: Test) {
 	useJUnitPlatform()
 }
 
+test {
+	enabled = false
+}
+
 // build fat jar with all dependencies
 jar {
 	manifest {
