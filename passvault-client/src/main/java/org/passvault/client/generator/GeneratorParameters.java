@@ -16,7 +16,7 @@ public record GeneratorParameters(char[] characters, char[] specialChars, int pa
 	
 	public static final char[] LOWERCASE_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 	public static final char[] UPPERCASE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-	public static final char[] NUMBERS = "012345678".toCharArray();
+	public static final char[] NUMBERS = "0123456789".toCharArray();
 	public static final char[] DEFAULT_SPECIAL_CHARS = "!@#$%^&*?".toCharArray();
 	
 	/**
