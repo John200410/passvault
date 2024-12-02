@@ -49,7 +49,6 @@ public class Globals {
 						final ItemType type = ItemType.valueOf(obj.get("type").getAsString());
 						final String name = obj.get("name").getAsString();
 						
-						//TODO: complete
 						switch(type) {
 							case USERNAME:
 								return new UsernameItem(name, obj.get("value").getAsString());
@@ -71,6 +70,9 @@ public class Globals {
 								return new UrlItem(name, urls);
 							case NOTE:
 								return new NoteItem(name, obj.get("value").getAsString());
+							case CUSTOM:
+							case CUSTOM_SECRET:
+								return new CustomItem(type, name, obj.get("value").getAsString());
 							default:
 								throw new JsonParseException("Unknown item type: " + type);
 						}

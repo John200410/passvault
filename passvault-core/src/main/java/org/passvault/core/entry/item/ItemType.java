@@ -12,7 +12,6 @@ public enum ItemType {
 	PASSWORD("Password", true),
 	AUTHENTICATOR("2FA"),
 	URL("URLs"),
-	FILE("Attachment"),
 	NOTE("Notes"),
 	CUSTOM(""),
 	CUSTOM_SECRET("", true);

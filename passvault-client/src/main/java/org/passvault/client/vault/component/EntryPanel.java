@@ -6,6 +6,7 @@ import com.jgoodies.forms.layout.*;
 import org.passvault.client.vault.component.item.*;
 import org.passvault.core.entry.Entry;
 import org.passvault.core.entry.item.IEntryItem;
+import org.passvault.core.entry.item.ItemType;
 import org.passvault.core.entry.item.TextItemBase;
 import org.passvault.core.entry.item.items.*;
 
@@ -353,6 +354,18 @@ public class EntryPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new NoteItem("")));
+				}
+			});
+			popup.add(new AbstractAction("Custom") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new CustomItem(ItemType.CUSTOM, "Enter a name..", "")));
+				}
+			});
+			popup.add(new AbstractAction("Custom (Secret)") {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddItemButton.this.addItem(EntryPanel.this.createItemComponent(new CustomItem(ItemType.CUSTOM_SECRET, "Enter a name..", "")));
 				}
 			});
 			
